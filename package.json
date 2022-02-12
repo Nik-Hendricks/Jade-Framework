@@ -1,7 +1,7 @@
 {
-  "name": "dank-delivers",
+  "name": "jade-framework",
   "version": "1.0.0",
-  "description": "Marijuana Delivery Platform",
+  "description": "PWA compliant WebApp Framework",
   "main": "server.js",
   "dependencies": {
     "browserify": "^17.0.0",
@@ -26,12 +26,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Nik-Hendricks/Dank-Delivers.git"
+    "url": "git+https://github.com/Nik-Hendricks/Jade-Framework.git"
   },
   "author": "Nik Hendricks",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Nik-Hendricks/Dank-Delivers/issues"
+    "url": "https://github.com/Nik-Hendricks/Jade-Framework/issues"
   },
-  "homepage": "https://github.com/Nik-Hendricks/Dank-Delivers#readme"
+  "homepage": "https://github.com/Nik-Hendricks/Jade-Framework#readme"
 }

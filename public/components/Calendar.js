@@ -11,94 +11,92 @@ class Calendar extends Component{
         this.buttons = {
             "1":{
                 onclick: () => {
-                    this.calculator_output.value = ''
+                    
                 }
             },
             "2":{
                 onclick: (e) => {
-                    this.calc_mode_toggle(e);
-                    
-
+                   
                 }
             },
             "3":{
                 onclick: () => {
-                    this.calculator_output.value += ' % '
+                    
                 }
             },
             "4":{
                 onclick: () => {
-                    this.calculator_output.value += ' / '
+                    
                 }
             },
             "5":{
                 onclick: () => {
-                    this.calculator_output.value += '7'
+                    
                 }
             },
             "6":{
                 onclick: () => {
-                    this.calculator_output.value += '8'
+                    
                 }
             },
             "7":{
                 onclick: () => {
-                    this.calculator_output.value += '9'
+                    
                 }
             },
             "8":{
                 onclick: () => {
-                    this.calculator_output.value += ' * '
+                   
                 }
             },
             "9":{
                 onclick: () => {
-                    this.calculator_output.value += '4'
+                   
                 }
             },
             "10":{
                 onclick: () => {
-                    this.calculator_output.value += '5'
+                    
                 }
             },
             "11":{
                 onclick: () => {
-                    this.calculator_output.value += '6'     
+                      
                 }
             },   
             "12":{
                 onclick: () => {
-                    this.calculator_output.value += ' - '
+                    
                 }
             },
             "13":{
                 onclick: () => {
-                    this.calculator_output.value += '1'
+                
                 }
             },
             "14":{
                 onclick: () => {
-                    this.calculator_output.value += '2'
+                
                 }
             },
             "15":{
                 onclick: () => {
-                    this.calculator_output.value += '3'
+                
                 }
             },
             "16":{
                 onclick: () => {
-                    this.calculator_output.value += ' + '
+                
                 }
             },
             "17":{
                 onclick: () => {
-                    this.calculator_output.value += '0'
+                
                 }
             },
             "18":{
                 onclick: () => {
-                    this.calculator_output.value += '.'
+                
                 }
             },
             "19":{
@@ -179,38 +177,42 @@ class Calendar extends Component{
                         </div>`
 
         this.calendar_title = this.getElementsByClassName('calendar-title')[0];
-        this.calendar_day_container = this.getElementsByClassName('day-container')[0]
-        this.calendar_cols = this.getElementsByClassName('calendar-cols')[0]
-        this.month = this.get_month();
-        this.month_offset = this.get_month_offset();
+        this.calendar_day_container = this.getElementsByClassName('day-container')[0];
+        this.calendar_cols = this.getElementsByClassName('calendar-cols')[0];
 
-        this.day_offset = this.get_day_offset(this.date.getDay());
+        this.month = this.get_month();
+        this.day_num = this.date.getDate()
+        console.log(this.day_num)
+        this.first_day_offset = this.get_first_day_offset();
         this.set_calendar_title(this.month);
-        this.highlight_day(Number(this.date.getDay()));
+        
         this.sunday_position = this.get_last_sunday()
 
-        var first_month_day = new Date(this.date.getFullYear(), this.date.getMonth(), 1).toString().slice(0,4).toLowerCase();
-        console.log(this.week_days.findIndex(x => x.toString() === first_month_day));
-
+      
         for(var i = 0; i < this.week_days.length; i++){
             this.calendar_cols.innerHTML += `<p>${this.week_days[i]}</p>`;
         }
 
-        for(var i = 0; i < this.day_offset; i++){
-            this.prepend_days()
-        }
+        this.append_calendar_days().then(res => {
+            this.highlight_day(res, this.day_num);
 
-        for(var key in this.buttons){
-            this.add_calendar_day(key)
-        }
+        })
+    }
+
+    append_calendar_days(){
+        return new Promise(async(resolve) => {
+            for(var i = 0; i < this.first_day_offset; i++){
+                this.prepend_day()
+            }
+            for(var key in this.buttons){
+                this.append_day(key)
+            }
+            return resolve(this.calendar_day_container.children)
+        })
     }
 
     set_calendar_title(title){
         this.calendar_title.innerHTML = title
-    }
-
-    add_calendar_day(day){
-        this.calendar_day_container.innerHTML += `<div class="calendar-day"><p>${day}</p></div>`
     }
 
     get_last_sunday() {
@@ -218,38 +220,35 @@ class Calendar extends Component{
         return  new Date(today.setDate(today.getDate()-today.getDay())).toString().slice(8, 10);;
     }
 
-
     get_day_offset(x){
         return(x % 7)
     }
 
-    get_month_offset(){
-        //get first day of month eg: 'tue',
-        //get index of that from array
-        this.first_month_day = new Date(this.date.getFullYear(), this.date.getMonth(), 1).toString().slice(0,4).toLowerCase();
-        
-        let index = this.week_days.findIndex(rank => rank === this.first_month_day);
-        console.log(index)
+    get_first_day_offset(){
+        var first_month_day = new Date(this.date.getFullYear(), this.date.getMonth(), 1).toString().slice(0, 3).toLowerCase();
+        return this.week_days.indexOf(first_month_day);
     }
 
-    prepend_days(){
+    prepend_day(){
         var day = document.createElement('div');
         day.classList.add('calendar-day', 'secondary');
         this.calendar_day_container.prepend(day)
+    }
+
+    append_day(day_num){
+        var day = document.createElement('div');
+        day.classList.add('calendar-day');
+        day.innerHTML = `<p>${day_num}</p>`
+        this.calendar_day_container.append(day)
     }
 
     get_month(){
         return this.months[this.date.getMonth()];
     }
 
-    highlight_day(x){
-        var index = parseInt(x + this.day_offset);
-        console.log(index)
-        console.log(this.getElementsByClassName('calendar-day'))
-        var e = this.getElementsByClassName('calendar-day');
-        setTimeout(() =>{
-            e[index].classList.add('outline')
-        }, 100)
+    highlight_day(e, x){
+        var index = parseInt(x + this.first_day_offset - 1);
+        e[index].classList.add('outline')
     }
 
 
