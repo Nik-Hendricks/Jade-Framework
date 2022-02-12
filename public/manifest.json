@@ -1,0 +1,25 @@
+{
+    "short_name": "Jade Framework",
+    "name": "Jade",
+    "icons": [
+      {
+        "src": "/img/icons-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "/img/icons-512.png",
+        "type": "image/png",
+        "sizes": "512x512",
+        "purpose":"maskable"
+      }
+    ],
+    "start_url": "http://192.168.0.3",
+    "background_color": "#232931",
+    "display": "standalone",
+    "scope": "http://192.168.0.3",
+    "theme_color": "#232931",
+    "shortcuts": [
+
+    ]
+  }

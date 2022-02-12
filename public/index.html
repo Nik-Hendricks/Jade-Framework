@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="">
+<meta name="theme-color" content="#232931"/>
+<link rel="manifest" href="/manifest.json">
+<html lang="en">
+    <head>
+        <title></title>
+        <link rel="manifest" href="/manifest.json">
+        <script type="module" src="/js/main.js"></script>
+        <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+        <link rel="stylesheet" href="/css/main.css">
+    </head>
+    <body>
+        <menu-bar-top></menu-bar-top>
+        <main-content></main-content>
+        <menu-bar-bottom>
+            <div class="header-center-button-container">
+                <span class="material-icons header-center-button" onclick='window.history.pushState("","","/OtherMagic")'>auto_awesome</span>
+            </div>
+            <div class="header-center-button-container">
+                <span class="material-icons header-center-button" onclick='window.history.pushState("","","/Components")'>auto_awesome_motion</span>                                        
+            </div>
+            <div class="header-center-button-container">
+                <span class="material-icons header-center-button" onclick='window.history.pushState("","","/About")'>info</span>                                        
+            </div>
+        </menu-bar-bottom>
+        <loading-spinner></loading-spinner>
+    </body>
+</html>
