@@ -180,6 +180,15 @@ class Calendar extends Component{
         this.calendar_day_container = this.getElementsByClassName('day-container')[0];
         this.calendar_cols = this.getElementsByClassName('calendar-cols')[0];
 
+        this.cal_data = {
+            'feb':{
+                '13':{
+                    type:'reminder',
+                    text:'test reminder'
+                }
+            }
+        }
+
         this.month = this.get_month();
         this.day_num = this.date.getDate()
         console.log(this.day_num)
@@ -251,6 +260,10 @@ class Calendar extends Component{
         e[index].classList.add('outline')
     }
 
+
+}
+
+class Day{
 
 }
 window.customElements.define('custom-calendar', Calendar);

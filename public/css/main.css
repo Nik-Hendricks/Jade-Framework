@@ -1093,19 +1093,20 @@ hr{
 }
 
 .calendar{
+    --calendar-size: 350px;
     display:block;
-    width:350px;
-    height:350px;
+    width:var(--calendar-size);
+    height:var(--calendar-size);
     margin:auto;
 }
 
 .calendar-day{
-    --calendar-btn-size:calc(calc(350px / 7) - 5px * 2);
+    --calendar-btn-size:calc(calc(var(--calendar-size) / 7) - 5px * 2);
     width:var(--calendar-btn-size);
-    height:var(--calendar-btn-size);
+    min-height:var(--calendar-btn-size);
     float:left;
     margin:5px;
-    background:var(--theme-secondary-color);
+    background:var(--theme-primary-color);
     border-radius: 10px;
 }
 
