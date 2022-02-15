@@ -1096,7 +1096,7 @@ hr{
     --calendar-size: 350px;
     display:block;
     width:var(--calendar-size);
-    height:var(--calendar-size);
+    height:auto;
     margin:auto;
 }
 
@@ -1104,10 +1104,16 @@ hr{
     --calendar-btn-size:calc(calc(var(--calendar-size) / 7) - 5px * 2);
     width:var(--calendar-btn-size);
     min-height:var(--calendar-btn-size);
-    float:left;
+    display:inline-block;
     margin:5px;
     background:var(--theme-primary-color);
     border-radius: 10px;
+    
+}
+
+.calendar .day-container{
+    display:block;
+    height:auto;
 }
 
 .calendar-day p{
@@ -1122,20 +1128,44 @@ hr{
 
 .calendar-day.outline{
     border:1px solid var(--theme-text-primary-color);
+    width:calc(var(--calendar-btn-size) - 2px);
+    height:calc(var(--calendar-btn-size) - 2px);
 }
 
 .calendar-day.secondary{
-    background:var(--theme-card-color)
+    background:var(--theme-card-color);
+    float:left !important;
 }
 
-.calendar-title{
+.calendar .title{
     text-align: center;
-    margin-bottom:5px;
+    margin:0px;
+    width:calc(100% - calc(48px * 2));
     text-transform: capitalize;
+    display: inline-block;
 }
+
+.prev-month{
+    display: inline-block;
+    margin:0px;
+    padding:0px;
+    margin-left:var(--global-margin);
+    color:var(--theme-primary-color);
+}
+
+.next-month{
+    display: inline-block;
+    margin:0px;
+    padding:0px;
+    margin-right:var(--global-margin);
+    color:var(--theme-primary-color);
+}
+
+
 
 .calendar-cols{
-    height:20px;
+    display:block;
+    height:34px;
     width:350px;
     margin:auto;
     position:relative;
@@ -1152,6 +1182,11 @@ hr{
     text-transform: capitalize;
 }
 
+.theme-primary-color{
+    color:var(--theme-primary-color);
+}
+
+
 @media only screen and (min-width: 500px) {
     .card{
         margin-left:auto;
@@ -1162,16 +1197,13 @@ hr{
         margin-left:auto;
         margin-right:auto;
     }
-
-    
-}
-
-@media only screen and (min-width: 500px) {
     main-content{
         width:500px;
         margin:auto;
     }
+    
 }
+
 
 /*
 @media only screen and (min-width: 1000px) {
