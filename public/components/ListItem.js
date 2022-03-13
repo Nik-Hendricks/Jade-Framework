@@ -3,12 +3,12 @@ import {Component} from '/components/Component.js';
 class ListItem extends Component {
     constructor(){
         super();
-        this.classList.add('list-item');
-        this.icon = this.getAttribute('icon');
-        this.text = this.getAttribute('text')
     }
 
     connectedCallback(){
+        this.classList.add('list-item');
+        this.icon = this.getAttribute('icon');
+        this.text = this.getAttribute('text')
         var children = this.innerHTML
         this.innerHTML = this.initialHTML;
         this.root_el = this.get_root_child()

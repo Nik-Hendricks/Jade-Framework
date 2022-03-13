@@ -15,14 +15,14 @@ const uniqid = require('uniqid')
 //routes
 var API = require('./routes/api.js');
 
-const cert = fs.readFileSync(__dirname + '/certificate/cert.cert');
+//const cert = fs.readFileSync(__dirname + '/certificate/cert.cert');
 //const ca = fs.readFileSync(__dirname + '/certificate/key.key');
-const key = fs.readFileSync(__dirname + '/certificate/key.key');
+//const key = fs.readFileSync(__dirname + '/certificate/key.key');
 
-var credentials = {key: key, cert: cert};
+//var credentials = {key: key, cert: cert};
 
 var httpServer = http.createServer(app);
-var httpsServer = https.createServer(credentials, app);
+//var httpsServer = https.createServer(credentials, app);
 
 
 //app.use(forceSsl);
@@ -127,8 +127,8 @@ app.get('*', (req, res) => {
 
 
 
-httpServer.listen(80);
-httpsServer.listen(443);
+httpServer.listen(86);
+//httpsServer.listen(443);
 
 
 

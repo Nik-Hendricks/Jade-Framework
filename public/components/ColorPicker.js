@@ -7,11 +7,11 @@ class ColorPicker extends Component{
 
     connectedCallback(){
         this.classList.add("color-picker")
-        this.innerHTML = `<div class="chip" id="button"><span class="material-icons-outlined">palette</span><p>Choose Color</p></div>
-        `
+        this.innerHTML = `<div class="chip" id="button"><span class="material-icons-outlined">palette</span><p>Choose Color</p></div><input style="display:none;" type="color"></input>`
 
-        var color_picker = document.createElement("input")
-        color_picker.setAttribute("type", "color")
+
+        
+        var color_picker = this.getElementsByTagName('input')[0]
         console.log(color_picker)
 
         color_picker.addEventListener("input", (e) => {

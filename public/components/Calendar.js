@@ -36,7 +36,7 @@ class Calendar extends Component{
         this.prev_button = this.getElementsByClassName('prev-month')[0];
         this.date_info_container = this.getElementsByClassName('date-info-container')[0];
 
-        this.open_calendar(this.current_month_name)
+        this.open_calendar('mar')
 
         this.next_button.onclick = () => {
             this.current_month_index += 1;

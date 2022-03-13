@@ -19,11 +19,20 @@ class CustomButton extends Component{
 
         this.icon = this.getAttribute("icon");
         this.text = this.getAttribute("text");
+        this.classList.add(variant_classes[this.variant])
+        if(this.icon.includes('fa-')){
+            this.initialHTML = `
+                                    <i class="${this.icon} ${colorClassList[this.icon]}"></i>
+                                    <p class="${colorClassList[this.icon]}">${this.text}</p> 
+                                `
+        }else{
+            this.initialHTML = `
+                                    <span class="material-icons ${colorClassList[this.icon]}">${this.icon}</span>
+                                    <p class="${colorClassList[this.icon]}">${this.text}</p> 
+                                `
+        }
 
-        this.initialHTML = `<div class="${variant_classes[this.variant]}">
-                                <span class="material-icons ${colorClassList[this.icon]}">${this.icon}</span>
-                                <p class="${colorClassList[this.icon]}">${this.text}</p> 
-                            </div>`
+
         this.innerHTML = this.initialHTML;
     }
 

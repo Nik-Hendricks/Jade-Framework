@@ -1,6 +1,7 @@
 //api2.js
 const root_url = '/API'
 var store_items = [];
+var user = {}
 
 function _setCookie(cname, cvalue, exdays) {
     const d = new Date();
@@ -65,14 +66,60 @@ function _evaluate(expression){
     })
 }
 
+function _get_user(uniqid){
+    return new Promise(resolve => {
+        http_fetch(`${root_url}/get_user`, {uniqid: uniqid}, "POST").then(res => {
+            resolve(res);
+        })
+    })
+}
+
+function _create_league(name, game, premier_date){
+    return new Promise(resolve => {
+        http_fetch(`${root_url}/create_league`, {name: name, game: game, premier_date: premier_date}, "POST").then(res => {
+            resolve(res)
+        })
+    })
+}
+
+function _get_managed_leagues(){
+    return new Promise(resolve => {
+        http_fetch(`${root_url}/get_managed_leagues`, {}, "POST").then(res => {
+            resolve(res)
+        })
+    })
+}
+
+function _get_games(){
+    return new Promise(resolve => {
+        http_fetch(`${root_url}/get_games`, {}, "POST").then(games => {
+            resolve(games)
+        })
+    })
+}
+
+function _get_league(league_uniqid){
+    return new Promise(resolve => {
+        http_fetch(`${root_url}/get_league`, {league_uniqid: league_uniqid}, "POST").then(league => {
+            resolve(league)
+        })
+    })
+}
+
 function reloadAPI(){
 
 }
 
 function loadAPI(){
-    window.DP.dispatch('API_LOAD');
-    
-    
+    var uniqid = _getCookie('uniqid');
+    if(!uniqid){
+        uniqid = false;
+    }
+    _get_user(uniqid).then(res => {
+        user = res;
+        console.log(res)
+        window.DP.dispatch('API_LOAD');
+    })
 }
 
 setTimeout(() => {
@@ -89,10 +136,6 @@ const API2 = {
         _setCookie(cookie, value)
     },
  
-    loadAPI(){
-        loadAPI()
-    },
-
     reloadAPI(){
         reloadAPI();
     },
@@ -112,26 +155,23 @@ const API2 = {
         return false
     },
 
-    add_to_cart(item_public_uniqid){
+    register_user(username, email, password){
         return new Promise(resolve => {
-            window.API2.get_user().then(res => {
-                if(!res.cart){
-                    var cart = [`${item_public_uniqid}`]    
-                }else{
-                    var cart = res.cart;
-                    console.log(this.in_array(item_public_uniqid, cart))
-                    if(this.in_array(item_public_uniqid, cart)){
-                        resolve({'error' : 'item exists'})
-                    }else{
-                        cart.push(item_public_uniqid);
-                    }
-                }
+            http_fetch(root_url + '/register', {username: username, email: email, password: password}, "POST").then(res => {
+                resolve(res)
+            })
+        })
+    },
 
-                window.API2.update_user({cart: cart}).then(res => {
-                    resolve(res);
-                    window.API2.reloadAPI();
-                })
+    get_user(uniqid){
+        return user;
+    },
 
+    check_login(username, password){
+        console.log(`username ${username} password ${password}`)
+        return new Promise(resolve => {
+            http_fetch(`${root_url}/check_login`, {username: username, password: password}, "POST").then(res => {
+                resolve(res);
             })
         })
     },
@@ -140,6 +180,38 @@ const API2 = {
         return new Promise(resolve => {
             _evaluate(expression).then(res => {
                 resolve(res)
+            })
+        })
+    },
+
+    get_managed_leagues(uniqid){
+        return new Promise(resolve => {
+            _get_managed_leagues(uniqid).then(leagues => {
+                resolve(leagues)
+            })
+        })
+    },
+
+    create_league(name, game, premier_date){
+        return new Promise(resolve => {
+            _create_league(name, game, premier_date).then(league => {
+                resolve(league);
+            })
+        })
+    },
+
+    get_league(league_uniqid){
+        return new Promise(resolve => {
+            _get_league(league_uniqid).then(league => {
+                resolve(league);
+            })
+        })
+    },
+
+    get_games(){
+        return new Promise(resolve => {
+            _get_games().then(games => {
+                resolve(games);
             })
         })
     }

@@ -23,46 +23,54 @@ function _set_title(title){
     top_nav_bar.setAttribute('title', title)
 }
 
-function _set_view(view, sub_view){
-        if(!routes[view]){
-            window.history.back();
-            _set_title(routes['404'].view);
-        }else{
-            if(sub_view){
-                if(routes[view].subViews){
-                    console.log('sub_view')
-                    var counter = 0;
-                    for(var key in routes[view].subViews){
-                        if(key == "*"  && counter == 0){
-                            _set_title(routes[view].subViews['*'].title)
-                            main_content_div.innerHTML = routes[view].subViews['*'].view;
-                        }else{
-                            if(routes[view].subViews[sub_view]){
-                                _set_title(routes[view].subViews[sub_view].title)
-                                main_content_div.innerHTML = routes[view].subViews[sub_view].view;
-                            }else{
-                                if(routes[view].subViews['*']){
-                                    _set_title(routes[view].subViews['*'].title)
-                                    main_content_div.innerHTML = routes[view].subViews['*'].view;
-                                }else{
-                                    window.history.back();
-                                }
-                            }
-                        }
-                        counter++;
-                    }
-  
-                }else{
-                    console.log('no')
-                    window.history.back();
-                }
-            }else{
-                _set_title(routes[view].title)
-                main_content_div.innerHTML = routes[view].view;
-            }
 
+function _set_view(view_path){
+    console.log(view_path)
+    var view;
+
+    if(view_path.length == 1){
+        if(!routes[view_path[0]]){
+            window.history.back();
+        }else{
+            var view = routes[view_path[0]].view;
+            var title = routes[view_path[0]].title;
+    
+            _set_title(title)
+            main_content_div.innerHTML = view;
         }
+
+    }else{
+        var view;
+        var title;
+        var entry = routes[view_path[0]]
+        var entry_stack = [];
+        var previous_entry;
+        for(var i = 1; i < view_path.length; i++){
+            entry_stack.push(view_path[i])
+            var previous_entry = entry;
+            //this.routes[entry].sub_view
+            entry = entry.subViews[view_path[i]];
+        }
+
+        if(entry == undefined){
+            if(previous_entry.subViews['*']){
+                view = previous_entry.subViews['*'].view;
+                title = previous_entry.subViews['*'].title;
+            }else if(previous_entry.subViews['*']){
+
+            }else{
+                window.history.back();
+            }
+        }else{
+            view = entry.view;
+            title = entry.title;
+        }
+        _set_title(title)
+        main_content_div.innerHTML = view;
+    }
+
 }
+
 
 function _url_listener(){
     // Store the current page URL on load
@@ -80,11 +88,21 @@ function _url_listener(){
 function _get_view_from_url(){
     var view = current_url.split('/')[3];
     var sub_view = current_url.split('/')[4];
-    if(sub_view != undefined){
-        _set_view(view, sub_view)  
-    }else{
-        _set_view(view)
+    var view_path = current_url.slice(current_url.indexOf('/') + 1, current_url.length).split('/');
+
+    
+    var final_paths = [];
+    for(var i = 2; i < view_path.length; i++){
+        final_paths.push(view_path[i])
     }
+
+    _set_view(final_paths);
+
+    //if(sub_view != undefined){
+    //    _set_view(view, sub_view)  
+    //}else{
+    //    _set_view(view)
+    //}
 }
 
 setTheme();
