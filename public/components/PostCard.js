@@ -1,31 +1,49 @@
 import {Component} from '/components/Component.js';
 
 class PostCard extends Component {
-    static get observedAttributes() { return ['title', 'primary']; }
-    constructor(callback){
+    static get observedAttributes() { return ['content', 'primary']; }
+    constructor(){
         super();
-        if(callback){
-            callback(this)
-        }
-
     }
 
     connectedCallback(){
         this.classList.add("post-card");
-        this.s_id = this.getAttribute('s_id');
+        this.type = this.getAttribute('type');
+        this.content = `<h1>${this.getAttribute('content')}</h1>`;
+        this.author_public_uniqid = this.getAttribute('author_public_uniqid');
+        this.attachments = [];
         this.update();
     }
 
     update(){
-        var html = `
-                    <image-slider>
-                    </image-slider>
-                    <p class="primary">${this.getAttribute('title')}</p>
-                    <p class="secondary brand-primary-color">${this.getAttribute('primary')}</p>
-                    <p class="card-description">${this.getAttribute('description')}</p>
-                    `
-        this.innerHTML = html;
-        //this.appendImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSadDHI6Z6VN4Ckiw9XaB6pKim7Seio2VfOEw&usqp=CAU')
+        window.API2.get_user(this.author_public_uniqid).then(user => {
+            this.post_html = `  <post-card-header username="${user.username}" image_url="https://via.placeholder.com/150"></post-card-header>
+                                <textarea rows="11" placeholder="Comment"></textarea>
+                                <custom-button icon="add" text="Post" style="float:unset; bottom:10px;"></custom-button>`
+
+
+            if(this.type == "post"){
+                this._HTML = this.post_html
+            }else{
+                this._HTML = `  <post-card-header username="${user.username}" image_url="https://via.placeholder.com/150"></post-card-header>
+                                    ${this.content}
+                                <post-card-footer likes="" comments=""></post-card-footer>`
+            }
+            this.innerHTML = this._HTML;
+            
+            this.post_card_header = this.getElementsByTagName('post-card-header')[0];
+            this.post_card_footer = this.getElementsByTagName('post-card-footer')[0];
+            
+            this.post_card_footer.like_button.onclick = () => {
+                
+            }
+
+            this.post_card_footer.comment_button.onclick = () => {
+                this.innerHTML =  this.post_html;
+            }
+
+        })
+
     }
 
     attributeChangedCallback(attr, oldValue, newValue) {
@@ -34,9 +52,7 @@ class PostCard extends Component {
         
     }
 
-    appendImage(url){
-        this.getElementsByTagName('image-slider')[0].root_el.innerHTML += `<img src="${url}"/>`
-    }
+
 }
 
 window.customElements.define('post-card', PostCard);

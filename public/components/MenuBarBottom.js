@@ -3,17 +3,29 @@ import {Component} from '/components/Component.js';
 class MenuBarBottom extends Component{
     constructor(){
         super();
-        this.initialHTML = `<div class="menu-bar-bottom">
-                            </div>`
     }
 
     connectedCallback(){ 
-        window.DP.on('API_LOAD', () => {  
-            var children = this.innerHTML
-            this.innerHTML = this.initialHTML;
-            this.root_el = this.get_root_child()
-            this.root_el.innerHTML = children;
+        window.DP.on('API_LOAD', () => {
+            this.item_count = 0;
+            this.classList.add('menu-bar-bottom');
         })
+    }
+
+    add_item(icon, url){
+        console.log('add item')
+        this.item_count++;
+        var button_container = document.createElement('div')
+        var button = document.createElement('span')
+        button_container.classList.add('header-center-button-container')
+        button.classList.add('header-center-button', 'material-icons');
+        button.innerText = icon;
+        button_container.onclick = () => {window.history.pushState('','', url)};
+        button_container.append(button);
+        this.append(button_container);
+        for(var i = 0; i < this.item_count; i ++){
+            this.getElementsByTagName('div')[i].style.width = `calc(100% / ${this.item_count})`;
+        }
     }
 }
 

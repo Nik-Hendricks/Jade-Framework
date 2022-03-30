@@ -11,11 +11,21 @@ class ManageLeagueView extends View{
         window.API2.get_league(this.league_uniqid).then(league => {
             window.VM.set_title(league.name)
             this.innerHTML = `  <custom-calendar></custom-calendar>
-                                <custom-button variant="half" text="View Applicants" icon="emoji_people" onclick="window.history.pushState('','','/League/Manage/${this.league_uniqid}/Applicants')"></custom-button>
-                                <custom-button variant="half" text="Create Post" icon="post_add"></custom-button>`
+                                <custom-button division="2" text="Members" icon="emoji_people" onclick="window.history.pushState('','','/League/Manage/${this.league_uniqid}/Members')"></custom-button>
+                                <custom-button division="2" text="Post" icon="post_add"></custom-button>
+                                <custom-button division="2" text="Statistics" icon="trending_up"></custom-button>
+                                <custom-button division="2" text="Edit" icon="edit"></custom-button>
+                                <custom-button division="2" text="Schedule" icon="edit" onclick="window.history.pushState('','','/League/Manage/${this.league_uniqid}/Schedule')"></custom-button>`
+                    
 
             var calendar = this.getElementsByTagName('custom-calendar')[0]
-            calendar.cal_data['mar'][league.premier_date] = {color: 'blue'}
+            calendar.cal_data['mar'][league.premier_date] = {color: 'blue'};
+            calendar.open_calendar()
+
+            calendar.on_date_clicked(date => {
+                console.log(date)
+
+            })
             window.DP.dispatch('VIEW_LOAD')
         })
     }

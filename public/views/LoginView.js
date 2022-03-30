@@ -11,7 +11,7 @@ class LoginView extends View{
                             <div style="position:relative; margin-top:100px;">
                                 <input id="username" type="text" placeholder="Username"></input>
                                 <input id="password" type="password" placeholder="Password"></input>
-                                <custom-button variant="wide" icon="add" text="Login"></custom-button>
+                                <custom-button icon="add" text="Login"></custom-button>
                             </div>
                             <p class="secondary" onclick="window.history.pushState('','','/Register')">register</p>
                             `
@@ -25,6 +25,7 @@ class LoginView extends View{
                 console.log(res);
                 if(res.success){
                     window.API2.setCookie('uniqid', res.success.uniqid)
+                    window.API2.setCookie('public_uniqid', res.success.public_uniqid)
                     window.location = '/Profile'
                 }
             })   

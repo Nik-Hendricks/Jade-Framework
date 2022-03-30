@@ -18,8 +18,8 @@ class SQLEditor extends Component{
                             </div>
                          </card-item>
                          </br>
-                         <custom-button variant="half" icon="play_arrow" text="Run"></custom-button>
-                         <custom-button variant="half" icon="restart_alt" text="Reset"></custom-button>
+                         <custom-button division="2" icon="play_arrow" text="Run"></custom-button>
+                         <custom-button division="2" icon="restart_alt" text="Reset"></custom-button>
                          </br>
                          </br>
                          <card-item variant="1" class="output">

@@ -35,23 +35,31 @@ class Calendar extends Component{
         this.next_button = this.getElementsByClassName('next-month')[0];
         this.prev_button = this.getElementsByClassName('prev-month')[0];
         this.date_info_container = this.getElementsByClassName('date-info-container')[0];
-
-        this.open_calendar('mar')
-
+        this.open_calendar();
         this.next_button.onclick = () => {
-            this.current_month_index += 1;
+            this.current_month_index += 1
+            if(this.current_month_index > 11){
+                this.current_month_index = 0;
+            }
             this.current_month_name = this.months[this.current_month_index]
             this.open_calendar(this.current_month_name)
         }
 
         this.prev_button.onclick = () => {
             this.current_month_index -= 1;
+            if(this.current_month_index < 0){
+                this.current_month_index = 11;
+            }
             this.current_month_name = this.months[this.current_month_index]
             this.open_calendar(this.current_month_name)
         }
     }
     
     open_calendar(month){
+        if(!month){
+            month = this.months[this.current_month_index]
+        }
+        console.log(this.current_month_index)
         this.construct_calendar(month)
         var day_num = this.date.getDate();
         if(this.months.indexOf(month) == this.our_month){

@@ -39,6 +39,7 @@ class RegisterView extends View{
             window.API2.register_user(username, email, password).then(res => {
                 console.log(res);
                 window.API2.setCookie('uniqid', res.uniqid);
+                window.API2.setCookie('public_uniqid', res.public_uniqid)
                 window.location = '/Profile'
             })
         }

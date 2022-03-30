@@ -1,13 +1,3 @@
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l08adlrt","_id":"7j0mZDUQru48LCyT"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l04383ns","_id":"CAfXRoYr5eIWTSyT"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l04ck73q","_id":"FRmkjbAfnZA0VsPl"}
-{"username":"Nightcrawler43","email":"","password":"pass","permisions":[],"uniqid":"5l9icyr0l0k8ylfr","_id":"J23sV7v2tluRBP0o"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l03g5bcg","_id":"WYvm03IckTnl1hfS"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l04ck0fr","_id":"bcMMcXQKphqEyoiz"}
-{"username":"Mo7iioNz","email":"finalmotiion@gmail.com","password":"Shit","permisions":[],"uniqid":"5l9icyr0l0k8zyld","_id":"fHAGQr9ONHpkDmwu"}
-{"username":"Enough-Said2","email":"Jspearson5@icloud.com","password":"huhDeq-hidna2-qidjuq","permisions":[],"uniqid":"5l9icbe9l01p0avq","_id":"mq3toy9Ti83l8wHS"}
-{"username":"Nightcrawler43","email":"Nightcrawler43","password":"pass","permisions":[],"uniqid":"5l9ica6yl01nw0kp","_id":"najDssGgyINIzdP1"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l08bl6ug","_id":"pZlhPpe8ejTt5aFm"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l04ngkvi","_id":"quwEDuCNaozgEwWe"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l08r19ir","_id":"sliZrPIsWUJBfNBy"}
-{"username":"","email":"","password":"","permisions":[],"uniqid":"5l9icyr0l07kta71","_id":"vTnVRzMt216qzBmH"}
+{"data_type":"user","username":"Dave","email":"Dave","password":"test","permisions":[],"public_uniqid":"5l9ilqekl0ra1hss","uniqid":"5l9ilqekl0ra1hsr","_id":"38n8CL8to87VH1Ej"}
+{"data_type":"user","username":"Nightcrawler43","email":"Nightcrawler43","password":"pass","permisions":[],"public_uniqid":"5l9iljavl0r5mrph","uniqid":"5l9iljavl0r5mrpg","_id":"3njVRBcdswxmRtYU"}
+{"data_type":"user","username":"TestMan","email":"test","password":"test","permisions":[],"public_uniqid":"5l9iljv5l0r66rnv","uniqid":"5l9iljv5l0r66rnu","_id":"ZjwGNfERXcIdpP1n"}

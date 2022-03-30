@@ -12,7 +12,7 @@ class ManageLeaguesView extends View{
         this.innerHTML = `  <h4>Created Leagues</h4>
                             <div id="league-item-container">
                             </div>
-                            <custom-button variant="wide" icon="add" text="Create League" onclick="window.history.pushState('','','/League/New')"></custom-button>`
+                            <custom-button icon="add" text="Create League" onclick="window.history.pushState('','','/League/New')"></custom-button>`
 
         window.API2.get_managed_leagues().then(res => {
             console.log(res)

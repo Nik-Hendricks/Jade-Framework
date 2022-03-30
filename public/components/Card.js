@@ -7,6 +7,11 @@ class Card extends Component{
     };
 
     connectedCallback(){
+        this.init();
+    }
+
+    init(){
+        this.innerHTML = ''
         this.clasify();
         if(this.getAttribute('image')){
             this.innerHTML += `<img src="${this.getAttribute('image')}"/>`

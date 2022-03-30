@@ -1,5 +1,6 @@
 var main_content_div = document.getElementsByTagName('main-content')[0]
 var top_nav_bar = document.getElementsByTagName('menu-bar-top')[0]
+var bottom_nav_bar = document.getElementsByTagName('menu-bar-bottom')[0]
 var routes = {};
 var current_url = location.href;
 
@@ -11,8 +12,8 @@ var current_url = location.href;
     }, {passive:false})
 
 function setTheme(){
-    _set_theme_property('--theme-primary-color', '#01a3a4');
-    _set_theme_property('--theme-secondary-color', 'darkcyan')
+    _set_theme_property('--theme-primary-color', '#e74c3c');
+    _set_theme_property('--theme-secondary-color', '#c0392b')
 }
 
 function _set_theme_property(property, value){
@@ -27,37 +28,45 @@ function _set_title(title){
 function _set_view(view_path){
     console.log(view_path)
     var view;
-
+    var title;
     if(view_path.length == 1){
+        //first level route
         if(!routes[view_path[0]]){
             window.history.back();
         }else{
-            var view = routes[view_path[0]].view;
-            var title = routes[view_path[0]].title;
-    
-            _set_title(title)
-            main_content_div.innerHTML = view;
-        }
 
+            view = routes[view_path[0]].view;
+            title = routes[view_path[0]].title;
+            _set_title(title)
+        }
     }else{
-        var view;
-        var title;
         var entry = routes[view_path[0]]
         var entry_stack = [];
         var previous_entry;
-        for(var i = 1; i < view_path.length; i++){
-            entry_stack.push(view_path[i])
-            var previous_entry = entry;
-            //this.routes[entry].sub_view
-            entry = entry.subViews[view_path[i]];
+        for(var i = 0; i < view_path.length; i++){
+            previous_entry = entry;
+            if(i == 0){
+                entry = previous_entry;
+            }else{
+                console.log(previous_entry)
+                if(entry == undefined){
+                    console.log(entry_stack)
+                    entry = entry_stack[1].subViews['*'].subViews[view_path[i]]
+                }else{
+                    entry = entry.subViews[view_path[i]]
+                }
+            }
+            entry_stack.push(entry)
+            console.log(entry)
         }
+        console.log(entry_stack)
 
         if(entry == undefined){
             if(previous_entry.subViews['*']){
                 view = previous_entry.subViews['*'].view;
                 title = previous_entry.subViews['*'].title;
             }else if(previous_entry.subViews['*']){
-
+                console.log('asdf')
             }else{
                 window.history.back();
             }
@@ -65,8 +74,14 @@ function _set_view(view_path){
             view = entry.view;
             title = entry.title;
         }
-        _set_title(title)
-        main_content_div.innerHTML = view;
+    }
+    _set_title(title)
+    main_content_div.innerHTML = view;
+    if(window.API2.getMobileOperatingSystem() == "iOS"){
+        if(window.navigator.standalone == true){
+            document.body.style.paddingTop = "40px";
+            main_content_div.style.marginTop = "40px";
+        }
     }
 
 }
@@ -82,7 +97,7 @@ function _url_listener(){
             current_url = location.href;
             _get_view_from_url();
         }
-    })
+    }, 400)
 }
 
 function _get_view_from_url(){
@@ -105,10 +120,9 @@ function _get_view_from_url(){
     //}
 }
 
-setTheme();
-setTimeout(() => {
-    _url_listener();
-}, 350)
+function _add_bottom_button(icon, url){
+    bottom_nav_bar.add_item(icon, url);
+}
 
 const ViewManager = {
     register(_routes){
@@ -134,7 +148,16 @@ const ViewManager = {
 
     set_theme_property(property, value){
         _set_theme_property(property, value)
-    }
+    },
+
+    add_bottom_button(icon, url){
+        _add_bottom_button(icon, url);
+    },
+
+    begin(){
+        _url_listener();
+        setTheme();
+    },
 }
 
 const VMSingleton = ViewManager;

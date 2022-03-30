@@ -31,7 +31,7 @@ class NewLeagueView extends View{
                 var name = this.getElementsByTagName('input')[0].value;
                 var selected_game = games_dropdown.value
                 if(name == undefined || name == '' || this.premier_date == undefined || selected_game == undefined){
-
+                    
                 }else{
                     window.API2.create_league(name, selected_game, this.premier_date).then(league => {
                         console.log(league)

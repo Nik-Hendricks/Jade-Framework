@@ -26,6 +26,9 @@ import {Calculator} from '/components/Calculator.js';
 import {Calendar} from '/components/Calendar.js';
 import {TrophyChip} from '/components/TrophyChip.js';
 import {DropDownButton} from '/components/DropDownButton.js';
+import {PostCardHeader} from '/components/PostCardHeader.js';
+import {PostCardFooter} from '/components/PostCardFooter.js';
+import {CustomTextInput} from '/components/CustomTextInput.js';
 //import all views
 import {HomeView} from '/views/HomeView.js';
 import {RegisterView} from '/views/RegisterView.js';
@@ -37,84 +40,48 @@ import {ManageLeaguesView} from '/views/ManageLeaguesView.js';
 import {ManageLeagueView} from '/views/ManageLeagueView.js';
 import {ProfileStatsView} from '/views/ProfileStatsView.js';
 import {NewLeagueView} from '/views/NewLeagueView.js';
-import {ManageLeagueApplicantsView} from '/views/ManageLeagueApplicantsView.js';
+import {ManageLeagueMembersView} from '/views/ManageLeagueMembersView.js';
+import {ManageLeagueScheduleView} from '/views/ManageLeagueScheduleView.js';
+import {ExploreView} from '/views/ExploreView.js';
+import {PostView} from '/views/PostView.js';
+import {FeedView} from '/views/FeedView.js';
+import {SearchView} from '/views/SearchView.js';
+import {SubscribersView} from '/views/SubscribersView.js';
+import {ManagementView} from '/views/ManagementView.js';
+import {ManagementAddGameView} from '/views/ManagementAddGameView.js'
 
 
 window.onload = () => {
-    register_service_worker();
+    
+    window.API2.register_service_worker();
     register_views();
 
     window.DP.on("VIEW_LOAD", () => {
         window.loadingSpinner.hide();
     })
-    
+
     window.DP.on('API_LOAD', () => {
-        var user = window.API2.get_user();
-        console.log(user)
-        if(user.error){
-            console.log('no user found')
-            window.history.pushState('','','/Login')
-        }else{
-            
-        }
-        window.VM.get_view_from_url();
-        window.loadingSpinner.hide();
-        if(getMobileOperatingSystem() == "iOS"){
-            if(window.navigator.standalone == true){
-                document.body.style.paddingTop = "40px";
-                console.log(document.getElementsByTagName("menu-bar-top")[0])
-                document.getElementsByTagName("main-content")[0].style.top = "100px"
+        
+            var user = window.API2.user();
+            if(user.error){
+                console.log('no user found')
+                window.history.pushState('','','/Login')
             }
-        }
-
-
+            window.VM.add_bottom_button('public', '/Search');
+            window.VM.add_bottom_button('auto_awesome_motion', '/Explore')
+            window.VM.add_bottom_button('wysiwyg', '/Feed')
+            window.VM.add_bottom_button('person', '/Profile');
+            window.VM.begin();
+            window.VM.get_view_from_url();
+            window.loadingSpinner.hide();
+        
     })
 
     window.DP.on('NO_AUTH', () => {
-
     })   
 
-
+    
 }
-
-/**
- * Determine the mobile operating system.
- * This function returns one of 'iOS', 'Android', 'Windows Phone', or 'unknown'.
- *
- * @returns {String}
- */
-function getMobileOperatingSystem() {
-    var userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
-    // Windows Phone must come first because its UA also contains "Android"
-    if (/windows phone/i.test(userAgent)) {
-        return "Windows Phone";
-    }
-
-    if (/android/i.test(userAgent)) {
-        return "Android";
-    }
-
-    // iOS detection from: http://stackoverflow.com/a/9039885/177710
-    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-        return "iOS";
-    }
-
-    return "unknown";
-}
-
-function register_service_worker(){
-    console.log('service worker registration')
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/worker').then(function(registration) {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function(err) {
-            console.log('ServiceWorker registration failed: ', err);
-        });
-    }
-}
-
-
 
 function register_views(){
 
@@ -135,17 +102,27 @@ function register_views(){
             title: 'Profile',
             view: `<profile-view></profile-view>`,
             subViews:{
-                "LinkAccounts":{
-                    title:"Link Accounts",
-                    view: `<link-accounts-view></link-accounts-view>`
+                "*":{
+                    title: 'Profile',
+                    view: `<profile-view></profile-view>`
                 },
                 "Manage":{
                     title:"Manage Profile",
-                    view: `<manage-profile-view></manage-profile-view>`
+                    view: `<manage-profile-view></manage-profile-view>`,
+                    subViews:{
+                        "LinkAccounts":{
+                            title:"Link Accounts",
+                            view: `<link-accounts-view></link-accounts-view>`
+                        },  
+                    }
                 },
                 "Stats":{
                     title:"Profile Stats",
                     view: `<profile-stats-view></profile-stats-view>`,
+                },
+                "Subscribers":{
+                    title: "Subscribers",
+                    view: `<subscribers-view></subscribers-view>`
                 }
             }
         },
@@ -165,9 +142,13 @@ function register_views(){
                             title: "Manage League",
                             view: `<manage-league-view>`,
                             subViews:{
-                                "Applicants":{
-                                    title: "Applicants",
-                                    view: `<manage-league-applicants-view></manage-league-applicants-view>`
+                                "Members":{
+                                    title: "Members",
+                                    view: `<manage-league-members-view></manage-league-members-view>`
+                                },
+                                "Schedule":{
+                                    title: "League Schedule",
+                                    view: `<manage-league-schedule-view></manage-league-schedule-view>`
                                 }
                             }
                         }
@@ -176,6 +157,32 @@ function register_views(){
                 "New":{
                     title:"New League",
                     view:"<new-league-view></new-league-view>",
+                }
+            }
+        },
+        "Explore":{
+            title:"Explore",
+            view: `<explore-view></explore-view>`
+        },
+        "Post":{
+            title:'New Post',
+            view: `<post-view></post-view>`
+        },
+        "Feed":{
+            title:'Feed',
+            view: `<feed-view></feed-view>`
+        },
+        "Search":{
+            title:"Global Search",
+            view:`<search-view></search-view>`
+        },
+        "Management":{
+            title:"Management",
+            view: `<management-view>`,
+            subViews:{
+                "AddGame":{
+                    title:'Add Game',
+                    view: `<management-add-game-view></management-add-game-view>`
                 }
             }
         }

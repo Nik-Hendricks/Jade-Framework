@@ -4,25 +4,29 @@ class DropDownButton extends HTMLElement{
     }
 
     connectedCallback(){
-        this.opened = false
+        this.opened = false;
+        this.classList.add('drop-down-button')
         this.items;
         this.icon = this.getAttribute("icon");
         this.dropdown_icons = this.getAttribute("dropdown-icons");
         this.text = this.getAttribute("text");
-        this.classList.add('wide-button')
-        this.innerHTML = `
-                                <span class="material-icons">${this.icon}</span>
-                                <p>${this.text}</p>
-                                <div class="wide-button-dropdown-content">
-                                
+        this.style.width = ''
+        this.innerHTML = `  <custom-button icon="${this.icon}" text="${this.text}">
+                                <div class="custom-button-dropdown-content">       
                                 </div>
+                            </custom-button>
+                            
                             `
-        var dropdown_content = this.getElementsByClassName('wide-button-dropdown-content')[0];
+
+        var button = this.getElementsByTagName('custom-button')[0]
+        this.innerHTML += `     <div class="custom-button-dropdown-content">       
+                                </div>`
+        var dropdown_content = this.getElementsByClassName('custom-button-dropdown-content')[0];
 
 
         this.onclick = (ev) => {
+           
             dropdown_content.innerHTML = ''
-
             for(var i = 0;i < this.items.length; i++){
                 var name = this.items[i].name
                 var el = document.createElement('list-item')
@@ -30,12 +34,15 @@ class DropDownButton extends HTMLElement{
                 el.setAttribute('text', name)
                 el.onclick = (ev) => {
                     this.value = ev.path[0].innerText
-                    this.classList.toggle('opened')
-                    dropdown_content.classList.toggle('opened')
+                    console.log(this.value)
+                    this.classList.toggle('opened');
+                    dropdown_content.classList.toggle('opened');
                 }
                 dropdown_content.append(el)
             }
+            console.log(ev.path)
             if(ev.path[0] != dropdown_content && ev.path[1] != dropdown_content && ev.path[2] != dropdown_content){
+                console.log("TRUE")
                 if(this.opened){
                     this.opened = false;
                 }else{
