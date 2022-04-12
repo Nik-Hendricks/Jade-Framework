@@ -12,10 +12,9 @@ class DropDownButton extends HTMLElement{
         this.text = this.getAttribute("text");
         this.style.width = ''
         this.innerHTML = `  <custom-button icon="${this.icon}" text="${this.text}">
-                                <div class="custom-button-dropdown-content">       
-                                </div>
                             </custom-button>
-                            
+                            <div class="custom-button-dropdown-content">       
+                            </div>
                             `
 
         var button = this.getElementsByTagName('custom-button')[0]
@@ -27,22 +26,18 @@ class DropDownButton extends HTMLElement{
         this.onclick = (ev) => {
            
             dropdown_content.innerHTML = ''
-            for(var i = 0;i < this.items.length; i++){
-                var name = this.items[i].name
+            for(var i = 0; i < this.items.length; i++){
                 var el = document.createElement('list-item')
                 el.setAttribute('icon', this.dropdown_icons)
-                el.setAttribute('text', name)
+                el.setAttribute('text', this.items[i])
                 el.onclick = (ev) => {
                     this.value = ev.path[0].innerText
-                    console.log(this.value)
                     this.classList.toggle('opened');
                     dropdown_content.classList.toggle('opened');
                 }
                 dropdown_content.append(el)
             }
-            console.log(ev.path)
             if(ev.path[0] != dropdown_content && ev.path[1] != dropdown_content && ev.path[2] != dropdown_content){
-                console.log("TRUE")
                 if(this.opened){
                     this.opened = false;
                 }else{

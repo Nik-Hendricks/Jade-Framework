@@ -1,19 +1,16 @@
 import {View} from '/views/View.js';
 
-class ProfileStatsView extends View{
+class IncomeView extends View{
     constructor(){
         super();
     }
 
     connectedCallback(){
         this.classList.add('view')
-    
-        this.innerHTML = ``
-
+        console.log(window.location.href.split('/')[5])
         window.DP.dispatch("VIEW_LOAD");
-        
-        
     }
+
 }
-window.customElements.define('profile-stats-view', ProfileStatsView);
-export{ProfileStatsView};
+window.customElements.define('income-view', IncomeView);
+export{IncomeView};

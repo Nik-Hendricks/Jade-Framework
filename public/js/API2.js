@@ -2,6 +2,8 @@
 const root_url = '/API'
 var store_items = [];
 var user = {}
+var _dbs = [];
+var events = [];
 
 function _setCookie(cname, cvalue, exdays) {
     const d = new Date();
@@ -86,7 +88,7 @@ function http_fetch(url, data, method){
     return new Promise(resolve => {
         var opts = {
             	method: method,
-                headers: {'Content-Type': 'application/json'}
+                headers:{'Content-Type': 'application/json'}
             }
 
         if(method == "POST"){
@@ -122,131 +124,139 @@ function _evaluate(expression){
     })
 }
 
-function _get_user(public_uniqid){
+function _new_db(name){
+    _dbs[name] = new Nedb({filename: `${name}.db`, autoload: true})
+}
+
+function _get_events(){
     return new Promise(resolve => {
-        http_fetch(`${root_url}/get_user`, {public_uniqid: public_uniqid}, "POST").then(res => {
-            resolve(res);
+        _dbs['events'].find({}, (err, docs) => {
+            resolve(docs);
         })
     })
 }
 
-function _create_league(name, game, premier_date){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/create_league`, {name: name, game: game, premier_date: premier_date}, "POST").then(res => {
-            resolve(res)
-        })
-    })
+//https://stackoverflow.com/questions/8517089/js-search-in-object-values
+
+function searchFor(obj, toSearch) {
+    var results = [];
+    toSearch = trimString(toSearch).toLowerCase(); // trim it
+    for(var i = 0; i < obj.length; i++){
+        for(var key in obj[i]){
+            var compare_string = String(obj[i][key]).toLowerCase();
+            if(compare_string.indexOf(toSearch)!=-1) {
+                if(!itemExists(results, obj[i])) results.push(obj[i]);
+            }
+        }
+    }
+    return results;
+  }
+
+
+  function trimString(s) {
+    var l=0, r=s.length -1;
+    while(l < s.length && s[l] == ' ') l++;
+    while(r > l && s[r] == ' ') r-=1;
+    return s.substring(l, r+1);
+  }
+  
+  function compareObjects(o1, o2) {
+    var k = '';
+    for(k in o1) if(o1[k] != o2[k]) return false;
+    for(k in o2) if(o1[k] != o2[k]) return false;
+    return true;
+  }
+  
+  function itemExists(haystack, needle) {
+    for(var i=0; i<haystack.length; i++) if(compareObjects(haystack[i], needle)) return true;
+    return false;
+  }
+
+function routelist(route){
+    console.log(route)
+    var route_list = []
+    var counter = 0;
+    for(var key0 in route){
+        counter++
+        var item = route[key0]
+        if(item.subViews){
+            for(var key1 in subViews){
+                route_list.push(routelist(item.subViews[key1]))
+            }
+            
+        }else{
+            console.log(item)
+            route_list.push({url: '', view: item.view})
+        }
+        if(counter == route.length -1){
+            console.log("YES" +  route_list)
+            return route_list;
+        }
+    }
+    
 }
 
-function _get_managed_leagues(){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_managed_leagues`, {}, "POST").then(res => {
-            resolve(res)
-        })
-    })
+function get_route_list(routes){
+    var route_list = [];
+    for(var key in routes){
+        console.log(routelist(routes[key]))
+    }
+   // for(var i = 0; i < routes.length; i++){
+   //     var route = route[i]
+   //     console.log(routelist(route))
+   //     route_list.push(routelist(route))
+   //     if(i == routes.length - 1){
+   //         return route_list;
+   //     }
+   // }
 }
 
-function _get_games(){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_games`, {}, "POST").then(games => {
-            resolve(games)
-        })
-    })
-}
-
-function _get_teams(){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_teams`, {}, "POST").then(teams => {
-            resolve(teams)
-        })
-    })
-}
-
-function _get_leagues(){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_leagues`, {}, "POST").then(leagues => {
-            resolve(leagues)
-        })
-    })
-}
-
-function _get_league(league_uniqid){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_league`, {league_uniqid: league_uniqid}, "POST").then(league => {
-            resolve(league);
-        })
-    })
-}
-
-function _get_league_applicants(league_uniqid){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_league_applicants`, {league_uniqid: league_uniqid}, "POST").then(applicants => {
-            resolve(applicants);
-        })
-    })
-}
-
-function _get_user_posts(){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_posts`, {}, "POST").then(posts => {
-            resolve(posts);
-        })
-    })
-}
-
-function _create_post(title, content){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/create_post`, {title: title, content: content, author_public_uniqid: user.public_uniqid}, "POST").then(post => {
-            resolve(post)
-        })
-    })
+function searchRoutes(query){
+    var routes = window.VM.routes;
+    get_route_list(routes)
 }
 
 function _global_search(query, filter){
-    console.log(filter)
     return new Promise(resolve => {
-        http_fetch(`${root_url}/global_search`, {query: query, filter: filter}, "POST").then(res => {
+        searchRoutes(query)
+        var query_whitelist = ['events'];
+        var i = 0;
+        var res = [];
+        for(var key in filter){
+            if(query_whitelist.includes(filter[key])){
+                _dbs[filter[key]].find({}, (err, docs) => {
+                    searchFor(docs, query).forEach(item => {
+                        res.push(item)
+                    })
+    
+                    console.log(res)
+                    if(i == filter.length){
+                        console.log('done')
+                        resolve(res)
+                    }
+                })
+            }
+            i++
+        }
+    })
+}
+
+function _get_news(query){
+    return new Promise(resolve => {
+        var url = `${root_url}/get_news`;
+        http_fetch(url, {query: query}, "POST").then(res => {
             resolve(res);
         })
     })
 }
 
-function _subscribe(to, from){
-    http_fetch(`${root_url}/subscribe`, {to: to, from: from}, "POST").then(res => {
-        console.log(res)
-    })
-}
-
-function _get_post_feed(){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/get_post_feed`, {}, "POST").then(feed => {
-            resolve(feed)
-        })
-    })
-}
-
-function _create_game(name, description, image_url){
-    return new Promise(resolve => {
-        http_fetch(`${root_url}/create_game`, {name: name, description: description, image_url: image_url}, "POST").then(res => {
-            resolve(res);
-        })
-    })
-}
-
-function reloadAPI(){
-
-}
 
 function loadAPI(){
-    var public_uniqid = _getCookie('public_uniqid');
-    if(!public_uniqid){
-        public_uniqid = false;
-    }
-    _get_user(public_uniqid).then(res => {
-        user = res;
+    _get_events().then(res => {
+        events = res;
         console.log(res)
         window.DP.dispatch('API_LOAD');
-    })
+    })   
 }
 
 setTimeout(() => {
@@ -255,6 +265,14 @@ setTimeout(() => {
 
 
 const API2 = {
+    get dbs(){
+        return _dbs;
+    },
+
+    get_db(db){
+        return _dbs[db]
+    },
+
     getCookie(cookie){
         return _getCookie(cookie)
     },
@@ -288,35 +306,6 @@ const API2 = {
         })
     },
 
-    register_user(username, email, password){
-        return new Promise(resolve => {
-            http_fetch(root_url + '/register', {username: username, email: email, password: password}, "POST").then(res => {
-                resolve(res)
-            })
-        })
-    },
-
-    user(){
-        return user;
-    },
-
-    async get_user(public_uniqid){
-        return new Promise(resolve => {
-            _get_user(public_uniqid).then(user => {
-                resolve(user);
-            })
-        })
-    },
-
-    check_login(username, password){
-        console.log(`username ${username} password ${password}`)
-        return new Promise(resolve => {
-            http_fetch(`${root_url}/check_login`, {username: username, password: password}, "POST").then(res => {
-                resolve(res);
-            })
-        })
-    },
-
     register_service_worker(){
         _register_service_worker();
     },
@@ -337,50 +326,61 @@ const API2 = {
         })
     },
 
-    get_managed_leagues(uniqid){
+    new_db(name){
+        _new_db(name);
+    },
+    
+    get events_db(){
         return new Promise(resolve => {
-            _get_managed_leagues(uniqid).then(leagues => {
-                resolve(leagues)
+            _get_events().then(events => {
+                resolve(events);
             })
         })
     },
 
-    create_league(name, game, premier_date){
+
+    get events(){
+        return events;
+    },
+
+    get_event(_id){
         return new Promise(resolve => {
-            _create_league(name, game, premier_date).then(league => {
-                resolve(league);
+            this.dbs['events'].findOne({_id:_id}, (err, doc) => {
+                resolve(doc);
             })
         })
     },
 
-    get_leagues(){
+    new_event(name, type, start_time, end_time, selected_days, notes, color, days){
         return new Promise(resolve => {
-            _get_leagues().then(leagues => {
-                resolve(leagues);
-            })
+            this.dbs['events'].insert({name: name, type: type, start_time: start_time, end_time: end_time, notes: notes, color: color, days: selected_days}, (err, doc) => {
+                if(err){
+                    resolve({error: err})
+                }else{
+                    if(doc){
+                        resolve(doc);
+                    }
+                }
+            })            
         })
     },
 
-    get_league(league_uniqid){
+    async get_day_events(_date){
+        var date = (_date) ? _date: new Date().getDay();
         return new Promise(resolve => {
-            _get_league(league_uniqid).then(league => {
-                resolve(league);
-            })
-        })
-    },
+            var days_events = [];
+            this.events_db.then(events => {
+                if(events){
+                    events.forEach(event => {
+                        if(event.days.includes(Number(date))){
+                            days_events.push(event)
+                        }
+                    })
+                    resolve(days_events)
+                }else{
+                    resolve({error: "no events"})
+                }
 
-    get_league_applicants(league_uniqid){
-        return new Promise(resolve => {
-            _get_league_applicants(league_uniqid).then(applicants => {
-                resolve(applicants);
-            })
-        })
-    },
-
-    get_games(){
-        return new Promise(resolve => {
-            _get_games().then(games => {
-                resolve(games);
             })
         })
     },
@@ -393,50 +393,13 @@ const API2 = {
         })
     },
 
-    subscribe(to, from){
-        _subscribe(to, from)
-    },
-
-    get_subscribers(public_uniqid){
+    get_news(query){
         return new Promise(resolve => {
-            _get_subscribers(public_uniqid).then(subscribers => {
-                
+            _get_news(query).then(news => {
+                resolve(news);
             })
         })
-    },
-
-    create_post(title, content){
-        return new Promise(resolve => {
-            _create_post(title, content).then(res => {
-                resolve(res)
-            })
-        })
-    },
-
-    get_post_feed(){
-        return new Promise(resolve => {
-            _get_post_feed().then(feed => {
-                resolve(feed)
-            })
-        })
-    },
-
-    create_game(name, description, image_url){
-        return new Promise(resolve => {
-            _create_game(name, description, image_url).then(game => {
-                resolve(game);
-            })
-        })
-    },
-
-    get_teams(){
-        return new Promise(resolve => {
-            _get_teams().then(teams => {
-                resolve(teams);
-            })
-        })
-    },
-
+    }
 }
 
 const API2Singleton = API2;

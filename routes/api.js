@@ -3,7 +3,7 @@
 
 var datastore = require('../db/datastores.js')
 var uniqid = require('uniqid'); 
-
+const axios = require('axios')
 //private functions
 
 //public_uniqid = users public_uniqid
@@ -172,6 +172,17 @@ function _global_search(query, filter){
             }
             i++
         }
+    })
+}
+
+function _get_news(query){
+    console.log(query)
+    return new Promise(resolve => {
+        var url = `https://newsapi.org/v2/everything?q=${query}&from=${ new Date().toJSON().slice(0,10)}&sortBy=popularity&language=en&apiKey=4199f3eeb8854d248f9ed3ac545b2ae5`;
+
+        axios.get(url)
+          .then(res => resolve(res.data.articles))
+          .catch(err => console.log(err))
     })
 }
 
@@ -344,6 +355,13 @@ module.exports = (() => {
                     res.json(doc);
                 }
             }
+        })
+    })
+
+    API.post("/get_news", (req, res) => {
+        console.log(req.body)
+        _get_news(req.body.query).then(news => {
+            res.json(news);
         })
     })
 

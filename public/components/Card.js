@@ -7,40 +7,34 @@ class Card extends Component{
     };
 
     connectedCallback(){
+        this.classList.add('global-resize')
+        this.width = this.getAttribute('width');
+        this.secondary = this.getAttribute('secondary')
+        this.variant = this.getAttribute('variant');
+        this.has_image = this.hasAttribute('image') ? true : false;
+        this.is_blank = this.hasAttribute('blank') ? true : false;
+        this.is_square = this.hasAttribute('square') ? true : false;
         this.init();
     }
 
     init(){
-        this.innerHTML = ''
         this.clasify();
-        if(this.getAttribute('image')){
-            this.innerHTML += `<img src="${this.getAttribute('image')}"/>`
-        }
-        if(this.getAttribute('title')){
-            this.innerHTML += `<p>${this.getAttribute('title')}</p>`
-        }
-        if(this.getAttribute('secondary')){
-            this.innerHTML += `<p class="secondary">${this.getAttribute('secondary')}`
-        }
     }
 
     clasify(){
-        this.classes = ['card', 'card-2'];
-        if(this.getAttribute("variant")){
-            this.variant_class = this.classes[Number(this.getAttribute("variant")) -1]
+        var classes = ['card', 'card-2', 'icon-card'];
+        if(this.variant){
+            this.variant_class = classes[parseInt(this.variant)]
         }else{
-            this.variant_class = this.classes[0];
+            this.variant_class = classes[0];
         }
 
+        if(this.is_blank){
+            this.style.background = 'transparent';
+        }
         this.classList.add(this.variant_class);
-
-  
-
-        var children = this.innerHTML;
-        this.innerHTML = this.initialHTML;
-        this.root_el = this.get_root_child()
-        this.root_el.innerHTML = children;
     }
+
 
     attributeChangedCallback(attr, oldValue, newValue) {
         if(attr == 'variant'){
@@ -51,3 +45,4 @@ class Card extends Component{
 }
 window.customElements.define('card-item', Card);
 export {Card}
+

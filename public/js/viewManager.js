@@ -3,17 +3,13 @@ var top_nav_bar = document.getElementsByTagName('menu-bar-top')[0]
 var bottom_nav_bar = document.getElementsByTagName('menu-bar-bottom')[0]
 var routes = {};
 var current_url = location.href;
+var global_el_division = 12;
+var current_view;
 
-    document.body.addEventListener('wheel', (e) => {
-        if(e.path[0].tagName == 'BODY'){
-            e.preventDefault();
-           
-        }
-    }, {passive:false})
 
 function setTheme(){
-    _set_theme_property('--theme-primary-color', '#e74c3c');
-    _set_theme_property('--theme-secondary-color', '#c0392b')
+    //_set_theme_property('--theme-primary-color', '#706fd3');
+    //_set_theme_property('--theme-secondary-color', '#c0392b')
 }
 
 function _set_theme_property(property, value){
@@ -22,11 +18,10 @@ function _set_theme_property(property, value){
 
 function _set_title(title){
     top_nav_bar.setAttribute('title', title)
+    document.getElementsByTagName('title')[0].textContent = title
 }
 
-
 function _set_view(view_path){
-    console.log(view_path)
     var view;
     var title;
     if(view_path.length == 1){
@@ -48,7 +43,6 @@ function _set_view(view_path){
             if(i == 0){
                 entry = previous_entry;
             }else{
-                console.log(previous_entry)
                 if(entry == undefined){
                     console.log(entry_stack)
                     entry = entry_stack[1].subViews['*'].subViews[view_path[i]]
@@ -57,16 +51,14 @@ function _set_view(view_path){
                 }
             }
             entry_stack.push(entry)
-            console.log(entry)
         }
-        console.log(entry_stack)
 
         if(entry == undefined){
             if(previous_entry.subViews['*']){
                 view = previous_entry.subViews['*'].view;
                 title = previous_entry.subViews['*'].title;
             }else if(previous_entry.subViews['*']){
-                console.log('asdf')
+                
             }else{
                 window.history.back();
             }
@@ -74,9 +66,12 @@ function _set_view(view_path){
             view = entry.view;
             title = entry.title;
         }
+
+
     }
     _set_title(title)
     main_content_div.innerHTML = view;
+    _cache_last_view(view);
     if(window.API2.getMobileOperatingSystem() == "iOS"){
         if(window.navigator.standalone == true){
             document.body.style.paddingTop = "40px";
@@ -86,6 +81,9 @@ function _set_view(view_path){
 
 }
 
+function _cache_last_view(view){
+    window.localStorage.lastView = view;
+}
 
 function _url_listener(){
     // Store the current page URL on load
@@ -97,34 +95,39 @@ function _url_listener(){
             current_url = location.href;
             _get_view_from_url();
         }
-    }, 400)
+    }, 100)
 }
 
 function _get_view_from_url(){
     var view = current_url.split('/')[3];
     var sub_view = current_url.split('/')[4];
     var view_path = current_url.slice(current_url.indexOf('/') + 1, current_url.length).split('/');
-
-    
     var final_paths = [];
+
     for(var i = 2; i < view_path.length; i++){
         final_paths.push(view_path[i])
     }
 
     _set_view(final_paths);
-
-    //if(sub_view != undefined){
-    //    _set_view(view, sub_view)  
-    //}else{
-    //    _set_view(view)
-    //}
 }
 
 function _add_bottom_button(icon, url){
     bottom_nav_bar.add_item(icon, url);
 }
 
+function _resize_components(){
+    document.getElementsByClassName('view')[0].resizeComponents()
+}
+
 const ViewManager = {
+    main_content_div: main_content_div,
+    global_el_division: global_el_division,
+    current_view: current_view,
+    get routes(){
+        return routes;
+
+    },
+    
     register(_routes){
         routes = _routes;
         console.log(routes)
@@ -156,8 +159,16 @@ const ViewManager = {
 
     begin(){
         _url_listener();
+        _get_view_from_url();
         setTheme();
+        window.onresize = () => {
+            _resize_components()
+        };
     },
+
+    resize_components(){
+        _resize_components();
+    }
 }
 
 const VMSingleton = ViewManager;

@@ -13,7 +13,6 @@ class MenuBarBottom extends Component{
     }
 
     add_item(icon, url){
-        console.log('add item')
         this.item_count++;
         var button_container = document.createElement('div')
         var button = document.createElement('span')

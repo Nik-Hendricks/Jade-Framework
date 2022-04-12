@@ -1,6 +1,6 @@
 {
-    "short_name": "Jade Framework",
-    "name": "Jade",
+    "short_name": "Entrepreneur X",
+    "name": "Entrepreneur X",
     "icons": [
       {
         "src": "/img/icons-192.png",
@@ -14,10 +14,10 @@
         "purpose":"maskable"
       }
     ],
-    "start_url": "http://192.168.0.3",
+    "start_url": "https://147.182.241.143",
     "background_color": "#232931",
     "display": "standalone",
-    "scope": "http://192.168.0.3",
+    "scope": "/worker",
     "theme_color": "#232931",
     "shortcuts": [
 
