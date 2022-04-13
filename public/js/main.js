@@ -1,6 +1,8 @@
 import Dispatcher from '/js/dispatcher.js';
 import API2 from '/js/API2.js'
 import ViewManager from '/js/viewManager.js';
+import Builder from '/js/Builder.js';
+import Utils from '/js/Utils.js';
 import '/js/nedb.js';
 
 //import all components
@@ -17,18 +19,13 @@ import {ListItem} from '/components/ListItem.js';
 import {PostCard} from '/components/PostCard.js';
 import {ContextMenu} from '/components/ContextMenu.js';
 import {CodeFormat} from '/components/CodeFormat.js';
-import{ColorPicker} from '/components/ColorPicker.js';
 import {MusicPlayer} from '/components/MusicPlayer.js';
 import {SliderInput} from '/components/SliderInput.js';
 import {SQLEditor} from '/components/SQLEditor.js';
-import {CustomButton} from '/components/CustomButton.js'
 import {Calculator} from '/components/Calculator.js';
 import {Calendar} from '/components/Calendar.js';
-import {TrophyChip} from '/components/TrophyChip.js';
-import {DropDownButton} from '/components/DropDownButton.js';
 import {PostCardHeader} from '/components/PostCardHeader.js';
 import {PostCardFooter} from '/components/PostCardFooter.js';
-import {CustomTextInput} from '/components/CustomTextInput.js';
 import {CustomInput} from '/components/CustomInput.js';
 import {PieChart} from '/components/PieChart.js';
 //import all views

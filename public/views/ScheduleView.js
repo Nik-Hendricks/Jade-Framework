@@ -37,7 +37,7 @@ class ScheduleView extends View{
         this.append_daily_schedule(this.calendar.current_day_num)
 
         this.calendar.on_date_clicked(date => {                
-            this.append_daily_schedule(date.day_num)
+            this.append_daily_schedule(date.day_num, 'var(--theme-card-color)')
             this.apply_highlight_mode(date.day_num);
             
             this.day_text.innerHTML = `Events for ${this.calendar.selected_date.day}`
@@ -142,7 +142,7 @@ class ScheduleView extends View{
             this.events_container.innerHTML = '';
             if(events.length > 0){
                 events.forEach(event => {
-                    this.events_container.innerHTML += this.daily_schedule_row_item(event);
+                    this.events_container.innerHTML += window.Builder.daily_schedule_row_item(event,'var(--theme-card-color)');
                 })
             }else{
                 this.events_container.innerHTML = ` <card-item style="height:50px;" width="12">
@@ -153,36 +153,6 @@ class ScheduleView extends View{
         })
     }
 
-    daily_schedule_row_item(event){
-        var start_time = this.format_time(event.start_time);
-        var end_time = this.format_time(event.end_time);
-        return(/*html*/`
-        <card-item width="4" style="height:50px;">
-            <p style="padding:0; margin-top:5px; color:${event.color};text-align:center; font-size: 16px;">${event.name}</p>
-        </card-item>
-        <card-item width="3" style="height:50px;">
-            <p style="padding:0; margin-top:5px; color:${event.color};text-align:center; font-size: 16px;">${start_time}</p>
-        </card-item>
-        <card-item width="3" style="height:50px;">
-            <p style="padding:0; margin-top:5px; color:${event.color};text-align:center; font-size: 16px;">${end_time}</p>
-        </card-item>
-        <card-item width="2" style="height:50px;">
-            <span class="material-icons" style="margin:auto; margin-left:50%; left:-10px; font-size:20px; position:relative; margin-top:5px;color:var(--theme-primary-color);">
-            info
-            </span>
-        </card-item>`)
-    }
-
-    format_time(time){
-        if(time.length > 3){
-            var hour = time.slice(0, 2);
-            var mins = time.slice(2,4);
-        }else{
-            var hour = time.slice(0, 1);
-            var mins = time.slice(1,3);
-        }
-        return (hour > 12) ? String(hour - 12).concat(":",mins," PM"): String(hour).concat(":", mins, " AM") ;
-    }
 }
 window.customElements.define('schedule-view', ScheduleView);
 export{ScheduleView};

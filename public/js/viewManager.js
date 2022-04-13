@@ -168,7 +168,7 @@ const ViewManager = {
 
     resize_components(){
         _resize_components();
-    }
+    },
 }
 
 const VMSingleton = ViewManager;
