@@ -257,12 +257,14 @@ main-content{
     z-index: 99;
   }
   
+  /*
   @keyframes spin {
     to { -webkit-transform: rotate(360deg); }
   }
   @-webkit-keyframes spin {
     to { -webkit-transform: rotate(360deg); }
   }
+  */
 
 
 .loading-spinner{
@@ -1121,9 +1123,9 @@ hr{
     text-transform: capitalize;
 }
 
-@media only screen and (min-width: 500px) {
+/*@media only screen and (min-width: 500px) {
     main-content{
         width:500px;
         margin:auto;
     }
-}
+}*/

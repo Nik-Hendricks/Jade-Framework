@@ -40,6 +40,15 @@ app.get("/bundled_js",function(req, res){
   res.sendFile(__dirname + '/dist/main.js')
 })
 
+app.get("/bundled_css", (req, res) => {
+  var file = req.param('file');
+  res.header({
+    'Content-Type': 'text/javascript',
+    'Content-Size': getFilesizeInBytes(__dirname + '/dist/css.js')
+  });
+  res.sendFile(__dirname + '/dist/css.js')
+})
+
 app.get("/js/:file",function(req, res){
     var file = req.param('file');
     res.header({
@@ -57,6 +66,7 @@ app.get("/css/:file", (req, res) => {
     });
     res.sendFile(__dirname + '/src/css/'+file)
 })
+
 
 app.get("/img/:file",function(req, res){
     var file = req.param('file')

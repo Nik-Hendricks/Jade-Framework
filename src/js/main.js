@@ -98,7 +98,7 @@ function register_views(){
     var last_visited_view = (window.localStorage.lastView !== undefined) ? window.localStorage.lastView: `<my-day-view></my-day-view>`;
     var routes = {
         "":{
-            title: 'Client Commander',
+            title: 'Entreprenuer X',
             view: last_visited_view
         },
         "MyDay":{
