@@ -5,6 +5,7 @@ var routes = {};
 var current_url = location.href;
 var global_el_division = 12;
 var current_view;
+var _url_offset = 2 // or 2 for prod mode;
 
 
 function setTheme(){
@@ -93,18 +94,16 @@ function _url_listener(){
         if (current_url != location.href){
             window.loadingSpinner.show();
             current_url = location.href;
-            _get_view_from_url();
+            _get_view_from_url(_url_offset);
         }
     }, 100)
 }
 
-function _get_view_from_url(){
-    var view = current_url.split('/')[3];
-    var sub_view = current_url.split('/')[4];
+function _get_view_from_url(url_offset){
     var view_path = current_url.slice(current_url.indexOf('/') + 1, current_url.length).split('/');
     var final_paths = [];
 
-    for(var i = 2; i < view_path.length; i++){
+    for(var i = url_offset; i < view_path.length; i++){
         final_paths.push(view_path[i])
     }
 
@@ -142,7 +141,7 @@ const ViewManager = {
     },
 
     get_view_from_url(){ 
-        _get_view_from_url();
+        _get_view_from_url(_url_offset);
     },
 
     set_title(title){
@@ -159,7 +158,7 @@ const ViewManager = {
 
     begin(){
         _url_listener();
-        _get_view_from_url();
+        _get_view_from_url(_url_offset);
         setTheme();
         window.onresize = () => {
             _resize_components()

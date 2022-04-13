@@ -3,7 +3,6 @@ import API2 from '/js/API2.js'
 import ViewManager from '/js/viewManager.js';
 import Builder from '/js/Builder.js';
 import Utils from '/js/Utils.js';
-import '/js/nedb.js';
 
 //import all components
 import {MenuBarBottom} from '/components/MenuBarBottom.js';
