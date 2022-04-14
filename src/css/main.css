@@ -257,14 +257,14 @@ main-content{
     z-index: 99;
   }
   
-  /*
+  
   @keyframes spin {
     to { -webkit-transform: rotate(360deg); }
   }
   @-webkit-keyframes spin {
     to { -webkit-transform: rotate(360deg); }
   }
-  */
+  
 
 
 .loading-spinner{
@@ -623,10 +623,10 @@ textarea{
     margin:0px;
     padding:0px;
     float:left;
-    height: var(--global-input-font-size);
     line-height: var(--global-input-font-size);
     color:var(--white);
     width:100%;
+    height:calc(var(--global-input-font-size) + 2px);
     font-size:var(--global-input-font-size);
     text-transform: capitalize;
     overflow:hidden;

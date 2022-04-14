@@ -96,14 +96,9 @@ app.get("/worker", (req, res) => {
     res.sendFile(`${__dirname}/web_service_worker.js`)
 })
 
-app.get("/.well-known/pki-validation/F9A45775F1E2B768DD51029E25983812.txt", (req, res) => {
-    res.sendFile(`${__dirname}/ssl-validation.txt`)
+app.get("/_update_version",(req, res) => {
+  res.sendFile(`${__dirname}/update_version`)
 })
-
-app.get("/googlecec516bfa00ff236.html", (req, res) => {
-    res.sendFile(`${__dirname}/googlecec516bfa00ff236.html`);
-})
-
 
 app.use('/API', API)
 

@@ -32,7 +32,7 @@ const NCache = {
             if(i == arr.length){
                 if(trip == true){
                     setTimeout(() => {
-                    window.location.reload();
+                        window.location.reload();
                     }, 500);
                 }
                 console.log(`%c[%cNCache%c] %cScripts %c[%c${arr}%c] %cLoaded!`,'color:#5f27cd','color:#0abde3','color:#5f27cd', 'color: #2980b9', 'color: #3498db','color:white','color:#3498db','color:#2ecc71');
@@ -58,7 +58,11 @@ const NCache = {
         if(file){
             window.localStorage.removeItem(`${this._cache_prefix}${file}`)
         }else{
-            window.localStorage.clear();
+            for (x in localStorage){
+                if(x.includes(this._cache_prefix)){
+                    localStorage.removeItem(x)
+                }
+            }
         }
         window.location.reload();
     }
