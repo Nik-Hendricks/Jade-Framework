@@ -32,7 +32,6 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 app.get("/bundled_js",function(req, res){
-  var file = req.param('file');
   res.header({
     'Content-Type': 'text/javascript',
     'Content-Size': getFilesizeInBytes(__dirname + '/dist/main.js')
@@ -41,7 +40,6 @@ app.get("/bundled_js",function(req, res){
 })
 
 app.get("/bundled_css", (req, res) => {
-  var file = req.param('file');
   res.header({
     'Content-Type': 'text/javascript',
     'Content-Size': getFilesizeInBytes(__dirname + '/dist/css.js')
@@ -49,24 +47,21 @@ app.get("/bundled_css", (req, res) => {
   res.sendFile(__dirname + '/dist/css.js')
 })
 
-app.get("/js/:file",function(req, res){
-    var file = req.param('file');
-    res.header({
-      'Content-Type': 'text/javascript',
-      'Content-Size': getFilesizeInBytes(__dirname + '/src/js/' + file)
-    });
-    res.sendFile(__dirname + '/src/js/' + file)
+app.get("/NCache", (req, res) => {
+  res.header({
+    'Content-Type': 'text/javascript',
+    'Content-Size': getFilesizeInBytes(__dirname + '/dist/NCache.js')
+  });
+  res.sendFile(__dirname + '/dist/NCache.js')
 })
 
-app.get("/css/:file", (req, res) => {
-    var file = req.param('file');
-    res.header({
-      'Content-Type': 'text/css',
-      'Content-Length': getFilesizeInBytes(__dirname + '/src/css/' + file)
-    });
-    res.sendFile(__dirname + '/src/css/'+file)
+app.get("/NeDB", (req, res) => {
+  res.header({
+    'Content-Type': 'text/javascript',
+    'Content-Size': getFilesizeInBytes(__dirname + '/dist/nedb.js')
+  });
+  res.sendFile(__dirname + '/dist/nedb.js')
 })
-
 
 app.get("/img/:file",function(req, res){
     var file = req.param('file')
@@ -75,24 +70,6 @@ app.get("/img/:file",function(req, res){
       'Content-Length': getFilesizeInBytes(__dirname + '/src/img/' + file)
     });
     res.sendFile(__dirname + '/src/img/'+file)
-})
-
-app.get("/components/:file", (req, res) => {
-    var file = req.param('file');
-    res.header({
-      'Content-Type': 'text/javascript',
-      'Content-Size': getFilesizeInBytes(__dirname + '/src/components/' + file)
-    });
-    res.sendFile(__dirname + '/src/components/' + file)
-})
-
-app.get("/views/:file", (req, res) => {
-    var file = req.param('file');
-    res.header({
-      'Content-Type': 'text/javascript',
-      'Content-Size': getFilesizeInBytes(__dirname + '/src/views/' + file)
-    });
-    res.sendFile(__dirname + '/src/views/' + file)
 })
 
 app.get('/favicon.ico', (req, res) => {
