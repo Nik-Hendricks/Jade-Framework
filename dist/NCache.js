@@ -3,10 +3,12 @@
 
 const NCache = {
     _cache_prefix:'_CACHE_',
+    _trip:false,
     _query_cache(file){
         return window.localStorage.getItem(`${this._cache_prefix}${file}`);
     },
     _cache_exist(file){
+        console.log((window.localStorage.getItem(`${this._cache_prefix}${file}`) != null) ? true : false)
         return (window.localStorage.getItem(`${this._cache_prefix}${file}`) != null) ? true : false;
     },
     _cache(file){
@@ -14,23 +16,22 @@ const NCache = {
             window.localStorage.setItem(`${this._cache_prefix}${file}`, f);
         })
     },
-    _load_to_page(file){
-        var data = this._query_cache(file);
-        if(data == null){
-            this._cache(file);
-        }else{
-            document.body.append(this._create_script_el(data));
-        }
-    },
-    _load_pages(arr){
-        var trip = false;
+    _load_scripts(arr, version){
         var i = 0;
+        var version = version ? version : false;
+        var client_version = version ? window.localStorage.getItem('_update_version') : false;
         arr.forEach(p => {
             i++
-            if(this._cache_exist(p) == false){trip = true;}
-            this._load_to_page(p)
+            if(!this._cache_exist(p)){
+                this._trip = true;
+                this._cache(p);
+            }else if(client_version == null || client_version < version){
+                this._trip = true;
+            }else{
+                document.body.append(this._create_script_el(this._query_cache(p)));
+            }
             if(i == arr.length){
-                if(trip == true){
+                if(this._trip == true){
                     setTimeout(() => {
                         window.location.reload();
                     }, 500);
@@ -39,6 +40,19 @@ const NCache = {
             }
         });
     },
+
+    _check_update(latest_version){
+        var client_version = window.localStorage.getItem('_update_version');
+        if(client_version < latest_version || client_version == null){
+            window.localStorage.setItem('_update_version', latest_version)    
+            setTimeout(() => {
+                this._clear();
+            }, 500);
+        }else{
+            console.log(`%c[%cNCache%c] %cRunning the latest version %c${localStorage.getItem('_update_version')}`,'color:#5f27cd','color:#0abde3','color:#5f27cd', 'color: #2980b9', 'color:#2ecc71');
+        }
+    },
+
     _create_script_el(data){
         var b_64 = btoa(data)
         var sc = document.createElement('script');

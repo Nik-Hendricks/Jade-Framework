@@ -102,10 +102,6 @@ app.get("/_update_version",(req, res) => {
 
 app.use('/API', API)
 
-app.get('/dev*', (req, res) => {
-  res.sendFile(`${__dirname}/src/index.html`)
-})
-
 app.get('*', (req, res) => {
   res.sendFile(`${__dirname}/dist/index.html`)
 })

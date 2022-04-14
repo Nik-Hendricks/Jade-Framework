@@ -22,19 +22,8 @@
     </body>
 </html>
 <script type="module">
-console.log(NCache)
-NCache._load_pages(['bundled_css','NeDB','bundled_js']);
-
+NCache._load_scripts(['bundled_css','NeDB','bundled_js'], 10);
 fetch(`/_update_version`).then(response => { return response.json()}).then(data => {
-    var client_update_version = window.localStorage.getItem('_update_version')
-    if(client_update_version == null || client_update_version < data){
-        window.localStorage.setItem('_update_version', data)    
-        setTimeout(() => {
-            NCache._clear();
-        }, 500);
-    }else{
-       // NCache._load_pages(['bundled_css','NeDB','bundled_js']);
-    }
+    NCache._check_update(data);
 })
-
 </script>
