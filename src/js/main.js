@@ -62,7 +62,7 @@ window.onload = () => {
     })
 
     window.DP.on('NO_AUTH', () => {
-    })   
+    })
 
     
 }

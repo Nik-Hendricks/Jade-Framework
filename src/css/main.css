@@ -1123,9 +1123,9 @@ hr{
     text-transform: capitalize;
 }
 
-/*@media only screen and (min-width: 500px) {
+@media only screen and (min-width: 500px) {
     main-content{
         width:500px;
         margin:auto;
     }
-}*/
+}

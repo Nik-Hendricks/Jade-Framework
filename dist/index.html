@@ -10,12 +10,8 @@
 <html lang="en">
     <head>
         <title></title>
-        <link rel="manifest" href="/manifest.json">
-        <script type="module" src="/bundled_css"></script>
-        <script type="module" src="/bundled_js"></script>
-        <script src="/js/nedb.js"></script>
+        <link rel="manifest" href="/manifest.json">   
         <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
-    
     </head>
     <body>
         <menu-bar-top></menu-bar-top>
@@ -24,3 +20,65 @@
         <loading-spinner></loading-spinner>
     </body>
 </html>
+<script>
+//Niks localstorage js cacheing system  --note i think i could acheive all of this with a webworker but i dont have valid https rn :(
+//Created 4-13-2022 5:30 PM
+
+    
+
+const NCache = {
+    _query_cache(file){
+        return window.localStorage.getItem(`_CACHE_${file}`);
+    },
+    _cache_exist(file){
+        return (window.localStorage.getItem(`_CACHE_${file}`) != null) ? true : false;
+    },
+    _cache(file){
+        this._fetch(file).then(f => {
+            window.localStorage.setItem(`_CACHE_${file}`, f);
+        })
+    },
+    _load_to_page(file){
+        var data = this._query_cache(file);
+        if(data == null){
+            this._cache(file);
+        }else{
+            document.body.append(this._create_script_el(data));
+        }
+    },
+    _load_pages(arr){
+        var trip = false;
+        var i = 0;
+        arr.forEach(p => {
+            i++
+            if(this._cache_exist(p) == false){trip = true;}
+            this._load_to_page(p)
+            if(i == arr.length){
+                if(trip == true){
+                    setTimeout(() => {
+                    window.location.reload();
+                    }, 500);
+                }
+                console.log(`%c[%cNCache%c] %cScripts %c[%c${arr}%c] %cLoaded!`,'color:#5f27cd','color:#0abde3','color:#5f27cd', 'color: #2980b9', 'color: #3498db','color:white','color:#3498db','color:#2ecc71');
+            }
+        });
+    },
+    _create_script_el(data){
+        var b_64 = btoa(data)
+        var sc = document.createElement('script');
+        sc.setAttribute('src', `data:text/javascript;base64,${b_64}`)
+        return sc;
+    },
+    _fetch(file){
+        return new Promise(resolve => {
+            fetch(`/${file}`).then(response => {
+                return response.text();
+            }).then(data => {
+                resolve(data)
+            })
+        })
+    },
+}
+
+NCache._load_pages(['bundled_css','js/nedb.js','bundled_js'])
+</script>
