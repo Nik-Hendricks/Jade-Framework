@@ -18,10 +18,14 @@ class Component extends HTMLElement{
         }
     }
 
+    getModifiers(){
+
+    }
+
     resizeComponent(in_row){
         var el_tag = this.tagName.toLowerCase();
         var global_division = window.VM.global_el_division;
-        var global_width = (/*this.parentElement.offsetWidth > 500 ||*/ this.parentElement.classList.contains('sidescroller-content')) ? window.VM.main_content_div.offsetWidth: this.parentElement.offsetWidth;
+        var global_width = (this.parentElement.classList.contains('sidescroller-content')) ? window.VM.main_content_div.offsetWidth: this.parentElement.offsetWidth;
         var global_margin = (this.hasAttribute('nomargin')) ? 0 :parseInt(getComputedStyle(document.documentElement).getPropertyValue('--global-margin').split('px')[0]);
         var unit_size = (global_width / global_division);
         var width = (this.hasAttribute('width')) ? parseInt(this.getAttribute('width')): 12;
@@ -72,25 +76,41 @@ class Component extends HTMLElement{
         
     }
 
-    async get_rows(){
+    g_rows(){
+        var els = this.getElementsByClassName('global-resize');
+        var res = []
+        for(var i in els){
+            console.log(els[i])
+            res.push()
+        }
+    }
+
+    async get_rows(_check_children){
         return new Promise(resolve => {
             var els = this.getElementsByClassName('global-resize');
-            var unit_counter = 0;
-            var row_map = [];
-            var row = [];
+            var row_map = [], row = [], next_pass = [];
+            var width_acumulator = 0;
             for(var i = 0; i < els.length; i++){
                 var el = els[i];
-                var el_width = (el.hasAttribute('width')) ? Number(el.getAttribute('width')): 12;
-                row.push(el);
-                unit_counter += el_width;
-                if(unit_counter >= window.VM.global_el_division){
+                if(i == els.length -1){
+                    next_pass.forEach(es => {
+                        es.get_rows(false).then(e => {
+                            row_map.push(...e)
+                        })
+                    })
+                    resolve(row_map)
+                }
+                if(el.getElementsByClassName('global-resize').length > 0 && _check_children != false){
+                    next_pass.push(el);
+                }
+                if(next_pass.indexOf(el.parentElement) == -1){
+                    width_acumulator += el.hasAttribute('width') ? Number(el.getAttribute('width')) : 12;
+                    row.push(el);
+                }
+                if(width_acumulator >= window.VM.global_el_division){
                     row_map.push(row);
                     row = [];
-                    unit_counter = 0;
-                }
-                if(i == els.length -1){
-                    row_map.push(row)
-                    resolve(row_map);                
+                    width_acumulator = 0;
                 }
             }
         })

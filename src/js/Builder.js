@@ -25,7 +25,7 @@ const Builder = {
     
     big_pie_chart_card(){
         return /*html*/ `<card-item width="12">
-                            <card-item width="6" square blank>
+                            <card-item width="6" blank>
                                 <pie-chart></pie-chart>
                             </card-item>
                             <card-item width="6" blank>
