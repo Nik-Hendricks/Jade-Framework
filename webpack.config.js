@@ -25,6 +25,9 @@ var JS_CONFIG = {
       },
     ],
   },
+  optimization: {
+    concatenateModules: true,
+  },
 }; 
 
 module.exports = [JS_CONFIG];

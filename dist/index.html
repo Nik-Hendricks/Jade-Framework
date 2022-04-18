@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="viewport" content="viewport-fit=cover, user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
@@ -12,7 +11,7 @@
     <head>
         <title></title>
         <link rel="manifest" href="/manifest.json">   
-        <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet">
+        
     </head>
     <body>
         <menu-bar-top></menu-bar-top>
@@ -22,8 +21,23 @@
     </body>
 </html>
 <script type="module">
-NCache._load_scripts(['bundled_css','NeDB','bundled_js'], 10);
-fetch(`/_update_version`).then(response => { return response.json()}).then(data => {
-    NCache._check_update(data);
-})
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i <ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+NCache._check_update(getCookie('latest_version'));
+NCache._load_scripts(['https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css', 'https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp','/bundled_css','/NeDB','/bundled_js']);
+
 </script>

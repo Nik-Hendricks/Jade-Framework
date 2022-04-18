@@ -72,6 +72,17 @@ app.get("/img/:file",function(req, res){
     res.sendFile(__dirname + '/src/img/'+file)
 })
 
+
+
+app.get("/audio/:file", (req, res) => {
+  res.header({
+    'Content-Type': 'audio/mpeg',
+    'Content-Length': getFilesizeInBytes(__dirname + `/src/audio/${req.params.file}`),
+    'Accept-Ranges': 'bytes', 
+  });
+  res.sendFile(__dirname + `/src/audio/${req.params.file}`);
+});
+
 app.get('/favicon.ico', (req, res) => {
     res.header({
       'Content-Type': 'text/javascript',
@@ -103,7 +114,10 @@ app.get("/_update_version",(req, res) => {
 app.use('/API', API)
 
 app.get('*', (req, res) => {
-  res.sendFile(`${__dirname}/dist/index.html`)
+  fs.readFile('update_version', 'utf8', (error, data) => {
+    res.cookie('latest_version',data)
+    res.sendFile(`${__dirname}/dist/index.html`)
+  });
 })
 
 httpServer.listen(80);

@@ -14,9 +14,9 @@ class DataView extends View{
                     this.innerHTML = /*html*/ ` ${window.Builder.square_card_item(events.length, 'Total Events')}
                                                 ${window.Builder.square_card_item(day_events.length, 'Events Today')}
                                                 ${window.Builder.square_card_item(remaining_events, 'Events Left')}
-                                                <custom-input type="button" text="New Event" icon="info" onclick="window.history.pushState('','','/Data/Event/New')"></custom-input>
-                                                <custom-input type="button" text="New Expense" icon="info" onclick="window.history.pushState('','','/Data/Finances/Expenses/New')"></custom-input>
-                                                <custom-input type="button" text="New Income" icon="info" onclick="window.history.pushState('','','/Data/Finances/Income/New')"></custom-input>
+                                                <custom-input type="button" text="New Event" icon="event" onclick="window.history.pushState('','','/Data/Event/New')"></custom-input>
+                                                <custom-input type="button" text="New Expense" icon="credit_card" onclick="window.history.pushState('','','/Data/Finances/Expenses/New')"></custom-input>
+                                                <custom-input type="button" text="New Income" icon="attach_money" onclick="window.history.pushState('','','/Data/Finances/Income/New')"></custom-input>
                                                 <side-scroller style="width:100%;">    
                         
                                                 </side-scroller>`

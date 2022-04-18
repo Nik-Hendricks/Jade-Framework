@@ -1,0 +1,5 @@
+{   
+    "key": "home",            
+    "command": "workbench.action.tasks.build",
+    "when": "editorTextFocus" 
+}

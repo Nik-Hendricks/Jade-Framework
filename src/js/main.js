@@ -83,9 +83,11 @@ function track_events(){
                 console.log(events)
                 var d = new Date(); 
                 var st = d.getHours()+""+d.getMinutes()
+                console.log(st)
                 events.forEach(event => {
                     if(event.start_time == String(st)){
-                        
+                        console.log(event.alarm_sound)
+                        new Audio(event.alarm_sound).play();
                     }
                 })
 
@@ -98,7 +100,7 @@ function register_views(){
     var last_visited_view = (window.localStorage.lastView !== undefined) ? window.localStorage.lastView: `<my-day-view></my-day-view>`;
     var routes = {
         "":{
-            title: 'Entreprenuer X',
+            title: 'Life Manager X',
             view: last_visited_view
         },
         "MyDay":{

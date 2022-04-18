@@ -21,6 +21,9 @@ class CustomInput extends Component{
         if(this.type == 'color'){
             this.getElementsByClassName('material-icons')[0].style.color = this.value;
         }
+        if(this.type == 'slider'){
+            this.getElementsByTagName('input')[0].value = val;
+        }
     }
 
     set items(val){
@@ -57,6 +60,8 @@ class CustomInput extends Component{
                 this._is_password();
             }else if(this.type == "color"){
                 this._is_color();
+            }else if(this.type== "slider"){
+                this._is_slider();
             }
         }
         if(this.hasAttribute('blank')){
@@ -181,6 +186,14 @@ class CustomInput extends Component{
         this.className = 'custom-text-input';
     }
 
+    _is_slider(){
+        this.classList.add('slider-input')
+        var min = (this.hasAttribute('min')) ? Number(this.getAttribute('min')): 0;
+        var max = (this.hasAttribute('max')) ? Number(this.getAttribute('max')): 100;
+        this.innerHTML = `<input type="range" min="${min}" max="${max}">`
+        this.input = this.getElementsByTagName('input')[0];
+    }
+
     _append_dropdown_items(){
         if(this._items){
             for(var i = 0; i < this._items.length; i++){
@@ -247,21 +260,18 @@ class CustomInput extends Component{
             canvas.addEventListener(touchEvent, (e) => {
                 var x = (e.touches) ? e.layerX: e.offsetX;
                 var y = (e.touches) ? e.layerY: e.offsetY;
-
                 var imgData = ctx.getImageData(x, y, 1, 1).data;
-                console.log(imgData)
                 self.value = `rgba(${imgData[0]}, ${imgData[1]}, ${imgData[2]}, ${imgData[3]})`
                 self._render_color_map(canvas);
-                self._draw_middle_rainbow_square(canvas, imgData[0])
+                //self._draw_middle_rainbow_square(canvas, imgData[0])
                 self._render_color_map_mouse_circle(canvas, x, y);
-                
+                self.dispatchEvent(new Event('change'));
                 
             }, false);
     }
 
     _render_color_map_mouse_circle(canvas, x, y){
         var ctx = canvas.getContext('2d');
-
         ctx.strokeStyle = 'rgb(255, 255, 255)';
         ctx.lineWidth = '2';
         ctx.beginPath();
@@ -279,7 +289,12 @@ class CustomInput extends Component{
 
     _on_change(callback){
         this.addEventListener('change', () => {
-            callback(this.value);
+            if(this.type == 'slider'){
+                callback(this.input.value);
+            }else{
+                callback(this.value);
+            }
+            
         });
     }
 

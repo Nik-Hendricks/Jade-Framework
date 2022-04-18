@@ -351,9 +351,10 @@ const API2 = {
         })
     },
 
-    new_event(name, type, start_time, end_time, selected_days, notes, color, days){
+    new_event(name, type, start_time, end_time, selected_days, notes, color, _alarm_sound){
         return new Promise(resolve => {
-            this.dbs['events'].insert({name: name, type: type, start_time: start_time, end_time: end_time, notes: notes, color: color, days: selected_days}, (err, doc) => {
+            var alarm_sound = (_alarm_sound == undefined) ? 'none': `/audio${_alarm_sound}`
+            this.dbs['events'].insert({name: name, type: type, start_time: start_time, end_time: end_time, notes: notes, color: color, days: selected_days, alarm_sound: alarm_sound}, (err, doc) => {
                 if(err){
                     resolve({error: err})
                 }else{

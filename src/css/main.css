@@ -550,7 +550,7 @@ textarea{
     position:absolute;
     top:calc(var(--global-input-height) + 5px);
     width:100%;
-    background:var(--theme-hover-color);
+    background:var(--theme-card-color);
     border-radius:var(--global-border-radius);
     z-index:99;
 }
@@ -589,7 +589,6 @@ textarea{
     margin-right:0px;
     background:var(--theme-card-color);
     border-radius:var(--global-border-radius);
-    max-width:500px;
     -webkit-transition: ease-in-out var(--global-animation-length);
     transition: ease-in-out var(--global-animation-length);
 }
@@ -609,13 +608,13 @@ textarea{
     color:var(--theme-primary-color);
     width:16px;
     height:16px;
-    position:absolute;
     vertical-align: middle;
     padding:0px;
     margin:0px;
     font-size:16px;
     margin-top:calc(calc(var(--global-input-height) - var(--global-input-font-size)) / 2);
     margin-left:var(--global-margin);
+    float:left;
 }
 
 .custom-button p{
@@ -624,13 +623,14 @@ textarea{
     padding:0px;
     float:left;
     line-height: var(--global-input-font-size);
-    color:var(--white);
-    width:100%;
+    color:var(--theme-text-primary-color);
+    width:calc(100% - 26px);
     height:calc(var(--global-input-font-size) + 2px);
     font-size:var(--global-input-font-size);
     text-transform: capitalize;
     overflow:hidden;
     margin-top:calc(calc(var(--global-input-height) - var(--global-input-font-size)) / 2);
+    margin-left:-6px;
 }
 
 .custom-button i{
@@ -648,7 +648,7 @@ textarea{
     margin-bottom:var(--global-margin);
     height:var(--global-input-height);
     padding:8px;
-    background:var(--lightish-grey);
+    background:var(--theme-card-color);
     border-radius:var(--global-border-radius);
     max-width:500px;
     -webkit-transition: ease-in-out var(--global-animation-length);
@@ -843,9 +843,10 @@ hr{
 }
 
 .slider-input{
-    display:block;
+    float:left;
+    margin:0;
     margin-left:var(--global-margin);
-    margin-right:var(--global-margin);
+    margin-bottom:var(--global-margin);
 }
 
 .slider-input input[type="range"] {
@@ -858,6 +859,7 @@ hr{
     -webkit-transition: ease-in-out var(--global-animation-length);
     transition: ease-in-out var(--global-animation-length);
     border-radius: 2.5px;
+    margin:0;
   }
   
   .slider-input input[type="range"]:hover {
