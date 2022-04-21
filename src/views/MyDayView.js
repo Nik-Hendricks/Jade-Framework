@@ -28,7 +28,7 @@ class MyDayView extends View{
             <card-item width="6" style="height:200px;">
             </card-item>
             <custom-input width="4" type="button" icon="settings" text="Settings" onclick="window.history.pushState('','','/Settings')"></custom-input>
-            <custom-input width="4" type="button" icon="info" text="Automation"></custom-input>
+            <custom-input width="4" type="button" icon="info" text="Automation" onclick="window.history.pushState('','','/Automation')"></custom-input>
             <custom-input width="4" type="button" icon="info" text="text"></custom-input>
             <card-item>
                 <h1 style="width:100%; text-align:center; font-size:20px; color:var(--theme-secondary-color);">Todays Events</h1>

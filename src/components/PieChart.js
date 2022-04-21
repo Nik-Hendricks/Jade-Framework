@@ -23,10 +23,10 @@ class PieChart extends Component {
         this.used_colors = [];
         var counter = 0, total = 0;
         for(var key in results){
-            total += results[key].total;
+            total += Number(results[key].total);
+            console.log(total)
             if(counter == results.length){
-                this.drawPie(results, 7)
-                
+                this.drawPie(results, total)
             }
             counter++
         }

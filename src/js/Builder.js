@@ -7,6 +7,7 @@ const Builder = {
         console.log(background)
         var background_color = (background != undefined) ? background : 'var(--theme-background-color)' ;
         return(/*html*/`
+        <div onclick="window.history.pushState('','','/Data/Event/Edit/${event._id}')">
         <card-item width="4" style="max-height:37px; background:${background_color};">
             <p style="padding:0; margin:0; margin-bottom:10px; color:${event.color};text-align:center; font-size: 14px;">${event.name}</p>
         </card-item>
@@ -20,7 +21,8 @@ const Builder = {
             <span class="material-icons" style="margin:0; margin-left:50%; left:-7px; font-size:14px; position:relative; margin-bottom:10px;color:var(--theme-primary-color);">
             info
             </span>
-        </card-item>`)
+        </card-item>
+        </div>`)
     },
     
     big_pie_chart_card(){

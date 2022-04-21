@@ -351,10 +351,10 @@ const API2 = {
         })
     },
 
-    new_event(name, type, start_time, end_time, selected_days, notes, color, _alarm_sound){
+    new_event(data){
         return new Promise(resolve => {
-            var alarm_sound = (_alarm_sound == undefined) ? 'none': `/audio${_alarm_sound}`
-            this.dbs['events'].insert({name: name, type: type, start_time: start_time, end_time: end_time, notes: notes, color: color, days: selected_days, alarm_sound: alarm_sound}, (err, doc) => {
+            data.alarm_sound = (data.alarm_sound == undefined) ? 'none': `/audio${data.alarm_sound}`
+            this.dbs['events'].insert(data,  (err, doc) => {
                 if(err){
                     resolve({error: err})
                 }else{
@@ -363,6 +363,21 @@ const API2 = {
                     }
                 }
             })            
+        })
+    },
+
+    update_event(data, _id){
+        return new Promise(resolve => {
+            data.alarm_sound = (data.alarm_sound == undefined) ? 'none': `/audio${data.alarm_sound}`
+            this.dbs['events'].update({_id: _id}, {$set: data}, (err, doc) => {
+                if(err){
+                    resolve({error: err})
+                }else{
+                    if(doc){
+                        resolve(doc);
+                    }
+                }
+            })      
         })
     },
 

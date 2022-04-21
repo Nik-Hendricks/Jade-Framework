@@ -71,7 +71,7 @@ class MenuBarTop extends Component{
     }
 
     search_result(item){
-        return `    <div onclick="window.history.pushState('','','/Data/Event/${item._id}')">
+        return `    <div onclick="window.history.pushState('','','/Data/Event/Edit/${item._id}')">
                         <card-item width="2" style="height:40px; background-color:var(--theme-secondary-color);">
                             <span class="material-icons" style="width:100%; margin-top:0px; height:100%; text-align:center; font-size:18px; color:white;">article</span>
                         </card-item>

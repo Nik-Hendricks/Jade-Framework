@@ -34,8 +34,9 @@ class ScheduleView extends View{
         this.calendar = this.getElementsByTagName('custom-calendar')[0]
         this.events_container = this.getElementsByClassName('events-container')[0]
         this.day_text = this.getElementsByClassName('day-text')[0]
-        this.append_daily_schedule(this.calendar.current_day_num)
-
+        this.append_daily_schedule(this.calendar.selected_date.day_num)
+        this.apply_highlight_mode(this.calendar.selected_date.day_num)
+        this.day_text.innerHTML = `Events for ${this.calendar.selected_date.day}`
         this.calendar.on_date_clicked(date => {                
             this.append_daily_schedule(date.day_num, 'var(--theme-card-color)')
             this.apply_highlight_mode(date.day_num);
@@ -61,7 +62,7 @@ class ScheduleView extends View{
             if(e == "Default"){
                 this.color_mode = 'default';
             }
-            this.apply_highlight_mode(this.calendar.selected_date)
+            this.apply_highlight_mode(this.calendar.selected_date.day_num)
         });
 
         window.DP.dispatch("VIEW_LOAD");

@@ -62,11 +62,29 @@ class CustomInput extends Component{
                 this._is_color();
             }else if(this.type== "slider"){
                 this._is_slider();
+            }else if(this.type == "upload"){
+                this._is_upload();
             }
         }
         if(this.hasAttribute('blank')){
             this.style.backgroundColor = 'transparent';
         }
+    }
+
+    _is_upload(){
+        this.innerHTML = `  <input style="display:none;" type="file" id="file" class="inputfile"'>
+                            <label for="file">
+                                <div class="custom-button" style="width:100%; margin: 0px !important; cursor:pointer;">
+                                    <span class="material-icons">upload</span>
+                                    <p>${this.text}</p> 
+                                </div>
+                            </label>`
+                            this.style['margin-left'] = 'var(--global-margin)';
+                            this.style['margin-bottom'] = 'var(--global-margin)';
+
+                            this.onchange = (ev) => {
+                                console.log(ev.target.files)
+                            }
     }
 
     _is_color(){
@@ -97,7 +115,7 @@ class CustomInput extends Component{
             c.width = this.getBoundingClientRect().width - 20;
             c.height = this.getBoundingClientRect().width - 20;
             this._render_color_map(c);
-            this._draw_middle_rainbow_square(c, 0)
+            //this._draw_middle_rainbow_square(c, 0)
             this._setup_colorwheel_bindings(c);
 
         }

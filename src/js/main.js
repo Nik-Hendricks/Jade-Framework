@@ -39,6 +39,7 @@ import {EditEventView} from '/views/EditEventView.js';
 import {ExpenseView} from '/views/ExpenseView.js';
 import {IncomeView} from '/views/IncomeView.js';
 import {SettingsView} from '/views/SettingsView.js';
+import {AutomationView} from '/views/AutomationView.js';
 
 window.onload = () => {
     window.API2.register_service_worker();
@@ -154,8 +155,12 @@ function register_views(){
                             view:'<edit-event-view></edit-event-view>',
                         },
                         "Edit":{
-                            title:'Edit Event',
-                            view:`<edit-event-view></edit-event-view>`,
+                            subViews:{
+                                '*':{
+                                    title:'Edit Event',
+                                    view:`<edit-event-view></edit-event-view>`,
+                                }
+                            }
                         }
                     }
                 }
@@ -172,7 +177,12 @@ function register_views(){
         "Settings":{
             title:"Setting",
             view:`<settings-view></settings-view>`
-        }
+        },
+        "Automation":{
+            title:"Automation",
+            view:`<automation-view></automation-view>`
+        },
+
     }
     
     window.VM.register(routes)
